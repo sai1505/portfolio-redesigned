@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
+import { Link } from "react-router-dom";
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { Float } from '@react-three/drei';
 import * as THREE from 'three';
@@ -286,12 +287,13 @@ export default function Navbar() {
 
         const linkElement = linksRef.current[index];
         if (linkElement && navContainerRef.current) {
-            const rect = linkElement.getBoundingClientRect();
-            const navRect = navContainerRef.current.getBoundingClientRect();
-            const left = rect.left - navRect.left;
-            const width = rect.width;
+            const left = linkElement.offsetLeft;
+            const width = linkElement.offsetWidth;
 
-            setMorphStyle({ left: left - 37, width: width + 8 });
+            setMorphStyle({
+                left: left - 13,
+                width: width + 18
+            });
 
             linkElement.style.transition = 'transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)';
             linkElement.style.transform = 'scale(0.5)';
@@ -382,25 +384,25 @@ export default function Navbar() {
                                 <div
                                     key={link}
                                     className="relative px-4 py-2"
-                                    ref={el => linksRef.current[index] = el}
+                                    ref={(el) => (linksRef.current[index] = el)}
                                 >
-                                    <a
-                                        href={`#${link.toLowerCase()}`}
+                                    <Link
+                                        to={`/${link.toLowerCase()}`}
                                         className="text-xs font-bold tracking-wider uppercase cursor-pointer relative z-10"
                                         style={{
                                             fontFamily: "'Poppins', sans-serif",
-                                            color: activeLink === link ? '#000000ff' : 'rgba(255, 255, 255, 0.5)',
-                                            transition: 'color 0.3s ease'
-                                        }}
-                                        onClick={(e) => {
-                                            e.preventDefault();
-                                            handleLinkClick(link, index);
+                                            color:
+                                                activeLink === link
+                                                    ? '#000000ff'
+                                                    : 'rgba(255, 255, 255, 0.5)',
+                                            transition: 'color 0.3s ease',
                                         }}
                                         onMouseEnter={() => handleLinkHover(index, true)}
                                         onMouseLeave={() => handleLinkHover(index, false)}
+                                        onClick={() => handleLinkClick(link, index)}
                                     >
                                         {link}
-                                    </a>
+                                    </Link>
                                 </div>
                             ))}
                         </div>

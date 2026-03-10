@@ -1,414 +1,338 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react';
-import { Link } from "react-router-dom";
-import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { Float } from '@react-three/drei';
-import * as THREE from 'three';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useState, useEffect, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
-gsap.registerPlugin(ScrollTrigger);
-
-function SpiderWebLogo() {
-    const meshRef = useRef();
-    const linesRef = useRef();
-
-    const webGeometry = useMemo(() => {
-        const points = [];
-        const centerRadius = 0.2;
-        const rings = 4;
-        const pointsPerRing = 8;
-
-        points.push(new THREE.Vector3(0, 0, 0));
-
-        for (let ring = 1; ring <= rings; ring++) {
-            const radius = centerRadius + (ring * 0.15);
-            for (let i = 0; i < pointsPerRing; i++) {
-                const angle = (i / pointsPerRing) * Math.PI * 2;
-                points.push(new THREE.Vector3(
-                    Math.cos(angle) * radius,
-                    Math.sin(angle) * radius,
-                    (Math.random() - 0.5) * 0.1
-                ));
-            }
-        }
-
-        return points;
-    }, []);
-
-    const webLines = useMemo(() => {
-        const geometry = new THREE.BufferGeometry();
-        const positions = [];
-        const centerRadius = 0.2;
-        const rings = 4;
-        const pointsPerRing = 8;
-
-        for (let i = 0; i < pointsPerRing; i++) {
-            positions.push(0, 0, 0);
-
-            for (let ring = 1; ring <= rings; ring++) {
-                const radius = centerRadius + (ring * 0.15);
-                const angle = (i / pointsPerRing) * Math.PI * 2;
-                positions.push(
-                    Math.cos(angle) * radius,
-                    Math.sin(angle) * radius,
-                    (Math.random() - 0.5) * 0.1
-                );
-            }
-        }
-
-        for (let ring = 1; ring <= rings; ring++) {
-            const radius = centerRadius + (ring * 0.15);
-            for (let i = 0; i < pointsPerRing; i++) {
-                const angle1 = (i / pointsPerRing) * Math.PI * 2;
-                const angle2 = ((i + 1) / pointsPerRing) * Math.PI * 2;
-
-                positions.push(
-                    Math.cos(angle1) * radius,
-                    Math.sin(angle1) * radius,
-                    (Math.random() - 0.5) * 0.1
-                );
-                positions.push(
-                    Math.cos(angle2) * radius,
-                    Math.sin(angle2) * radius,
-                    (Math.random() - 0.5) * 0.1
-                );
-            }
-        }
-
-        geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
-        return geometry;
-    }, []);
-
-    useFrame((state) => {
-        if (meshRef.current) {
-            meshRef.current.rotation.z += 0.005;
-            const scale = 1 + Math.sin(state.clock.elapsedTime * 0.8) * 0.05;
-            meshRef.current.scale.set(scale, scale, scale);
-        }
-
-        if (linesRef.current) {
-            linesRef.current.material.opacity = 0.4 + Math.sin(state.clock.elapsedTime * 2) * 0.2;
-        }
-    });
-
-    return (
-        <Float speed={1.5} rotationIntensity={0.3} floatIntensity={0.4}>
-            <group ref={meshRef}>
-                <lineSegments ref={linesRef} geometry={webLines}>
-                    <lineBasicMaterial
-                        color="#ffffff"
-                        transparent
-                        opacity={0.6}
-                        linewidth={1}
-                    />
-                </lineSegments>
-
-                {webGeometry.map((point, index) => (
-                    <mesh key={index} position={point}>
-                        <sphereGeometry args={[0.02, 8, 8]} />
-                        <meshBasicMaterial
-                            color="#ffffff"
-                            transparent
-                            opacity={index === 0 ? 1 : 0.8}
-                        />
-                    </mesh>
-                ))}
-            </group>
-        </Float>
-    );
-}
-
-// Three.js Geometric Shapes with Parallax Movement
-function GeometricShapes({ scrollProgress, mousePosition }) {
-    const groupRef = useRef();
-    const shapesRefs = useRef([]);
-    const { viewport } = useThree();
-
-    const shapes = useMemo(() => {
-        return Array.from({ length: 25 }, (_, i) => ({
-            id: i,
-            type: ['circle', 'square', 'triangle', 'hexagon'][i % 4],
-            basePosition: [
-                (Math.random() - 0.5) * viewport.width * 2,
-                (Math.random() - 0.5) * viewport.height * 2,
-                (Math.random() - 0.5) * 15
-            ],
-            rotation: [
-                Math.random() * Math.PI,
-                Math.random() * Math.PI,
-                Math.random() * Math.PI
-            ],
-            scale: Math.random() * 2 + 1,
-            speed: Math.random() * 0.5 + 0.3
-        }));
-    }, [viewport.width, viewport.height]);
-
-    useFrame((state) => {
-        shapesRefs.current.forEach((shape, index) => {
-            if (shape && shapes[index]) {
-                shape.rotation.x += 0.001 * (index % 2 === 0 ? 1 : -1);
-                shape.rotation.y += 0.002 * (index % 3 === 0 ? 1 : -1);
-
-                const parallaxY = scrollProgress * shapes[index].speed * 5;
-                const parallaxX = scrollProgress * shapes[index].speed * 2 * (index % 2 === 0 ? 1 : -1);
-
-                const mouseX = mousePosition.x * shapes[index].speed * 2;
-                const mouseY = mousePosition.y * shapes[index].speed * 2;
-
-                shape.position.x = shapes[index].basePosition[0] + parallaxX + mouseX;
-                shape.position.y = shapes[index].basePosition[1] + parallaxY + mouseY;
-                shape.position.z = shapes[index].basePosition[2];
-            }
-        });
-    });
-
-    const createShape = (type, scale) => {
-        switch (type) {
-            case 'circle':
-                return <ringGeometry args={[scale * 0.8, scale, 32]} />;
-            case 'square':
-                return <boxGeometry args={[scale, scale, 0.1]} />;
-            case 'triangle':
-                return <coneGeometry args={[scale, scale * 1.5, 3]} />;
-            case 'hexagon':
-                return <cylinderGeometry args={[scale, scale, 0.1, 6]} />;
-            default:
-                return <ringGeometry args={[scale * 0.8, scale, 32]} />;
-        }
-    };
-
-    return (
-        <group ref={groupRef}>
-            {shapes.map((shape, index) => (
-                <mesh
-                    key={shape.id}
-                    ref={(el) => (shapesRefs.current[index] = el)}
-                    position={shape.basePosition}
-                    rotation={shape.rotation}
-                    scale={shape.scale}
-                >
-                    {createShape(shape.type, 1)}
-                    <meshBasicMaterial
-                        color="#ffffff"
-                        transparent
-                        opacity={0.4}
-                        wireframe
-                    />
-                </mesh>
-            ))}
-        </group>
-    );
-}
+const NAV_NODES = [
+    { id: 0, label: "HOME", href: "#home", complexity: "O(1)" },
+    { id: 1, label: "ABOUT", href: "#about", complexity: "Θ(1)" },
+    { id: 2, label: "SKILLS", href: "#skills", complexity: "O(n)" },
+    { id: 3, label: "PROJECTS", href: "#projects", complexity: "O(n log n)" },
+    { id: 4, label: "EXPERIENCE", href: "#experience", complexity: "O(t)" }, // t = timeline
+    { id: 5, label: "CONTACT", href: "#contact", complexity: "O(1)" },
+];
 
 export default function Navbar() {
-    const [activeLink, setActiveLink] = useState('Home');
-    const [morphStyle, setMorphStyle] = useState({ left: 392.101, width: 81.6203 });
-    const linksRef = useRef([]);
-    const logoRef = useRef(null);
-    const navContainerRef = useRef(null);
-    const [isAnimating, setIsAnimating] = useState(false);
-    const [scrollProgress, setScrollProgress] = useState(0);
-    const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-    const lastScrollY = useRef(0);
+    const [active, setActive] = useState(0);
+    const [hovered, setHovered] = useState(null);
+    const [traversing, setTraversing] = useState(null);
+    const [menuOpen, setMenuOpen] = useState(false);
+    const [scrolled, setScrolled] = useState(false);
 
     useEffect(() => {
-        if (navContainerRef.current) {
-            navContainerRef.current.style.opacity = '0';
-            navContainerRef.current.style.transform = 'translateY(-50px)';
-
-            setTimeout(() => {
-                if (navContainerRef.current) {
-                    navContainerRef.current.style.transition = 'all 1s cubic-bezier(0.34, 1.56, 0.64, 1)';
-                    navContainerRef.current.style.opacity = '1';
-                    navContainerRef.current.style.transform = 'translateY(0)';
-                }
-            }, 100);
-        }
-
-        // GSAP ScrollTrigger for navbar hide/show
-        const showAnim = gsap.from(navContainerRef.current, {
-            yPercent: -100,
-            paused: true,
-            duration: 0.4,
-            ease: 'power2.out'
-        }).progress(1);
-
-        ScrollTrigger.create({
-            start: 'top top',
-            end: 'max',
-            onUpdate: (self) => {
-                if (self.direction === -1) {
-                    // Scrolling up - show navbar
-                    showAnim.play();
-                } else {
-                    // Scrolling down - hide navbar
-                    showAnim.reverse();
-                }
-            }
-        });
-
-        const handleScroll = () => {
-            const scrollY = window.scrollY;
-            const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-            const progress = scrollY / maxScroll;
-            setScrollProgress(progress);
-
-            // Scale effect only when visible
-            if (navContainerRef.current && scrollY > 50) {
-                navContainerRef.current.style.transform = 'scale(0.95) translateY(0)';
-            } else if (navContainerRef.current) {
-                navContainerRef.current.style.transform = 'scale(1) translateY(0)';
-            }
-
-            lastScrollY.current = scrollY;
-        };
-
-        const handleMouseMove = (e) => {
-            const x = (e.clientX / window.innerWidth) * 2 - 1;
-            const y = -(e.clientY / window.innerHeight) * 2 + 1;
-            setMousePosition({ x, y });
-        };
-
-        window.addEventListener('scroll', handleScroll, { passive: true });
-        window.addEventListener('mousemove', handleMouseMove);
-
-        return () => {
-            window.removeEventListener('scroll', handleScroll);
-            window.removeEventListener('mousemove', handleMouseMove);
-            ScrollTrigger.getAll().forEach(trigger => trigger.kill());
-        };
+        const onScroll = () => setScrolled(window.scrollY > 20);
+        window.addEventListener("scroll", onScroll);
+        return () => window.removeEventListener("scroll", onScroll);
     }, []);
 
-    const handleLinkClick = (link, index) => {
-        if (isAnimating) return;
+    const handleNodeClick = (id) => {
+        if (id === active) return;
 
-        setActiveLink(link);
-        setIsAnimating(true);
-
-        const linkElement = linksRef.current[index];
-        if (linkElement && navContainerRef.current) {
-            const left = linkElement.offsetLeft;
-            const width = linkElement.offsetWidth;
-
-            setMorphStyle({
-                left: left - 13,
-                width: width + 18
-            });
-
-            linkElement.style.transition = 'transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)';
-            linkElement.style.transform = 'scale(0.5)';
-
-            setTimeout(() => {
-                linkElement.style.transform = 'scale(1)';
-                setTimeout(() => setIsAnimating(false), 300);
-            }, 100);
-        }
+        // Graph traversal animation
+        setTraversing({ from: active, to: id });
+        setTimeout(() => {
+            setActive(id);
+            setTraversing(null);
+        }, 450);
+        setMenuOpen(false);
     };
 
-    const handleLinkHover = (index, isEntering) => {
-        const linkElement = linksRef.current[index];
-        if (linkElement) {
-            linkElement.style.transition = 'transform 0.3s ease';
-            if (isEntering) {
-                linkElement.style.transform = 'translateY(-5px) scale(1.05)';
-            } else {
-                linkElement.style.transform = 'translateY(0) scale(1)';
-            }
-        }
+    const isTraversed = (id) => {
+        if (!traversing) return false;
+        const { from, to } = traversing;
+        const [lo, hi] = from < to ? [from, to] : [to, from];
+        return id >= lo && id <= hi;
     };
 
-    const navLinks = ['Home', 'About', 'Projects', 'Skills', 'Contact'];
+    const isEdgeActive = (index) => {
+        if (!traversing) return false;
+        const { from, to } = traversing;
+        const [lo, hi] = from < to ? [from, to] : [to, from];
+        return index > lo && index <= hi;
+    };
 
     return (
-        <div className="min-h-10 bg-black relative overflow-hidden">
-            {/* Three.js Geometric Background */}
-            <div
-                className="fixed inset-0 z-0"
-                style={{
-                    width: '100vw',
-                    height: '100vh',
-                    overflow: 'hidden'
-                }}
+        <>
+            <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+        * { font-family: 'Inter', sans-serif; }
+        .mono { font-family: 'JetBrains Mono', monospace; }
+      `}</style>
+
+            <motion.nav
+                initial={{ y: -100, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
+                className="fixed top-0 left-0 right-0 z-50 px-4 md:px-6 pt-4 md:pt-6 pointer-events-none"
             >
-                <Canvas
-                    camera={{ position: [0, 0, 15], fov: 75 }}
+                <motion.div
+                    animate={{
+                        backgroundColor: scrolled
+                            ? "rgba(0, 0, 0, 0.85)"
+                            : "rgba(0, 0, 0, 0.4)",
+                        borderColor: scrolled
+                            ? "rgba(255, 255, 255, 0.2)"
+                            : "rgba(255, 255, 255, 0.1)",
+                    }}
+                    transition={{ duration: 0.3 }}
+                    className="max-w-7xl mx-auto flex items-center justify-between backdrop-blur-2xl border rounded-full px-6 md:px-8 py-3 md:py-4 pointer-events-auto"
                     style={{
-                        width: '100%',
-                        height: '100%'
+                        boxShadow: scrolled
+                            ? "0 8px 32px rgba(0, 0, 0, 0.4)"
+                            : "0 4px 16px rgba(0, 0, 0, 0.2)",
                     }}
                 >
-                    <ambientLight intensity={0.5} />
-                    <GeometricShapes scrollProgress={scrollProgress} mousePosition={mousePosition} />
-                </Canvas>
-            </div>
+                    {/* Logo - DSA Style */}
+                    <motion.a
+                        href="#home"
+                        onClick={(e) => {
+                            e.preventDefault();
+                            handleNodeClick(0);
+                        }}
+                        className="flex items-center gap-2 relative z-10 no-underline"
+                    >
 
-            {/* Navbar with GSAP Hide/Show */}
-            <nav className="fixed top-0 left-0 right-0 z-50 pt-4 px-8">
-                <div
-                    ref={navContainerRef}
-                    className="max-w-4xl mx-auto bg-black backdrop-blur-xl border-2 border-white/10 rounded-full px-8 py-4"
-                    style={{
-                        transition: 'transform 0.3s ease'
-                    }}
-                >
-                    <div className="flex items-center justify-between relative">
-                        <div
-                            className="absolute top-1/2 -translate-y-1/2 h-10 bg-white rounded-full -z-10"
-                            style={{
-                                left: `${morphStyle.left}px`,
-                                width: `${morphStyle.width}px`,
-                                backdropFilter: 'blur(20px)',
-                                transition: 'all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)'
-                            }}
-                        />
+                        {/* arr[0] */}
+                        <motion.span
+                            className="mono text-[10px] text-gray-500 border border-gray-700 px-2 py-0.5 tracking-wider"
+                            whileHover={{ scale: 1.1, color: "#fff" }}
+                            transition={{ duration: 0.2 }}
+                        >
+                            arr[0]
+                        </motion.span>
 
-                        <div ref={logoRef} className="flex items-center gap-3 z-10">
-                            <div className="w-10 h-10">
-                                <Canvas camera={{ position: [0, 0, 3], fov: 50 }}>
-                                    <ambientLight intensity={0.5} />
-                                    <pointLight position={[10, 10, 10]} />
-                                    <SpiderWebLogo />
-                                </Canvas>
-                            </div>
-                            <a
-                                href="#"
-                                className="text-2xl font-black tracking-tight text-white"
-                                style={{ fontFamily: "'Poppins', sans-serif" }}
-                            >
-                                BSVR
-                            </a>
-                        </div>
+                        {/* DEV.NAME */}
+                        <motion.span
+                            className="text-lg md:text-2xl font-bold text-white tracking-wider mx-1"
+                            whileHover={{ scale: 1.05 }}
+                            transition={{ duration: 0.2 }}
+                        >
+                            DEV.NAME
+                        </motion.span>
 
-                        <div className="flex items-center gap-1">
-                            {navLinks.map((link, index) => (
-                                <div
-                                    key={link}
-                                    className="relative px-4 py-2"
-                                    ref={(el) => (linksRef.current[index] = el)}
+                        {/* * */}
+                        <motion.span
+                            className="mono text-xs text-gray-500 mx-1"
+                            whileHover={{ rotate: 20, scale: 1.2 }}
+                            transition={{ duration: 0.2 }}
+                        >
+                            *
+                        </motion.span>
+
+                    </motion.a>
+
+                    {/* Desktop Navigation - Graph Nodes */}
+                    <div className="hidden lg:flex items-center gap-0 rounded-full px-2 py-1 relative">
+                        {NAV_NODES.map((node, index) => (
+                            <div key={node.id} className="flex items-center">
+                                {/* Edge connector between nodes */}
+                                {index > 0 && (
+                                    <div className="relative h-px w-3 mx-1 mb-5 bg-gray-700 overflow-hidden">
+                                        <motion.div
+                                            className="absolute top-0 left-0 h-full w-full bg-white"
+                                            initial={{ x: "-100%" }}
+                                            animate={{
+                                                x: isEdgeActive(index) ? "0%" : "-100%",
+                                            }}
+                                            transition={{
+                                                duration: 0.4,
+                                                ease: [0.4, 0, 0.2, 1],
+                                            }}
+                                        />
+                                    </div>
+                                )}
+
+                                {/* Node */}
+                                <motion.a
+                                    href={node.href}
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        handleNodeClick(node.id);
+                                    }}
+                                    onMouseEnter={() => setHovered(node.id)}
+                                    onMouseLeave={() => setHovered(null)}
+                                    className="relative px-4 py-2 mb-5 cursor-pointer no-underline flex flex-col items-center"
+                                    whileHover={{ scale: 1.05 }}
+                                    whileTap={{ scale: 0.95 }}
+                                    transition={{ duration: 0.2 }}
                                 >
-                                    <Link
-                                        to={`/${link.toLowerCase()}`}
-                                        className="text-xs font-bold tracking-wider uppercase cursor-pointer relative z-10"
-                                        style={{
-                                            fontFamily: "'Poppins', sans-serif",
+                                    {/* Label */}
+                                    <motion.span
+                                        className="text-[13px] font-semibold tracking-widest block"
+                                        animate={{
                                             color:
-                                                activeLink === link
-                                                    ? '#000000ff'
-                                                    : 'rgba(255, 255, 255, 0.5)',
-                                            transition: 'color 0.3s ease',
+                                                active === node.id
+                                                    ? "#fff"
+                                                    : isTraversed(node.id)
+                                                        ? "#999"
+                                                        : hovered === node.id
+                                                            ? "#ccc"
+                                                            : "#666",
                                         }}
-                                        onMouseEnter={() => handleLinkHover(index, true)}
-                                        onMouseLeave={() => handleLinkHover(index, false)}
-                                        onClick={() => handleLinkClick(link, index)}
+                                        transition={{ duration: 0.2 }}
                                     >
-                                        {link}
-                                    </Link>
-                                </div>
-                            ))}
-                        </div>
+                                        {node.label}
+                                    </motion.span>
+
+                                    {/* Complexity notation with node circle - shows on hover or active */}
+                                    <AnimatePresence>
+                                        {(hovered === node.id || active === node.id) && (
+                                            <motion.div
+                                                initial={{ opacity: 0, y: 5 }}
+                                                animate={{ opacity: 1, y: 0 }}
+                                                exit={{ opacity: 0, y: 5 }}
+                                                transition={{ duration: 0.2 }}
+                                                className="flex items-center justify-center gap-1.5 mt-2 absolute top-full left-1/2 -translate-x-1/2"
+                                            >
+
+                                                {/* Complexity text */}
+                                                <span
+                                                    className={`mono text-[9px] whitespace-nowrap border border-gray-700 px-2 py-0.5 bg-black/80 rounded
+                                                        ${active === node.id ? "text-white" : "text-gray-500"}`}
+                                                >
+                                                    {node.complexity}
+                                                </span>
+                                            </motion.div>
+                                        )}
+                                    </AnimatePresence>
+
+                                    {/* Active pill background */}
+                                    {active === node.id && (
+                                        <motion.div
+                                            layoutId="activePillBg"
+                                            className="absolute inset-0 bg-gradient-to-br from-white/15 to-white/5 rounded-full -z-10"
+                                            transition={{
+                                                type: "spring",
+                                                stiffness: 380,
+                                                damping: 30,
+                                            }}
+                                        />
+                                    )}
+
+                                    {/* Active underline */}
+                                    {active === node.id && (
+                                        <motion.div
+                                            layoutId="activeUnderline"
+                                            className="absolute bottom-0 left-0 right-0 h-[1.5px] bg-white rounded-full"
+                                            transition={{
+                                                type: "spring",
+                                                stiffness: 380,
+                                                damping: 30,
+                                            }}
+                                        />
+                                    )}
+                                </motion.a>
+                            </div>
+                        ))}
                     </div>
-                </div>
-            </nav>
-        </div>
+
+                    {/* Mobile Hamburger */}
+                    <motion.button
+                        onClick={() => setMenuOpen(!menuOpen)}
+                        className="lg:hidden flex flex-col justify-center items-center gap-1.5 p-2 relative z-10"
+                        aria-label="Toggle menu"
+                        whileTap={{ scale: 0.9 }}
+                    >
+                        <motion.span
+                            animate={{
+                                rotate: menuOpen ? 45 : 0,
+                                y: menuOpen ? 8 : 0,
+                            }}
+                            transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+                            className="block w-6 h-0.5 bg-white rounded-full"
+                        />
+                        <motion.span
+                            animate={{
+                                opacity: menuOpen ? 0 : 1,
+                            }}
+                            transition={{ duration: 0.2 }}
+                            className="block w-6 h-0.5 bg-white rounded-full"
+                        />
+                        <motion.span
+                            animate={{
+                                rotate: menuOpen ? -45 : 0,
+                                y: menuOpen ? -8 : 0,
+                            }}
+                            transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+                            className="block w-6 h-0.5 bg-white rounded-full"
+                        />
+                    </motion.button>
+                </motion.div>
+
+                {/* Mobile Menu - Stack metaphor */}
+                <AnimatePresence>
+                    {menuOpen && (
+                        <motion.div
+                            initial={{ opacity: 0, height: 0, y: -20 }}
+                            animate={{ opacity: 1, height: "auto", y: 0 }}
+                            exit={{ opacity: 0, height: 0, y: -20 }}
+                            transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+                            className="lg:hidden max-w-7xl mx-auto mt-2 overflow-hidden pointer-events-auto"
+                        >
+                            <motion.div
+                                className="bg-black/90 backdrop-blur-2xl border border-white/10 rounded-3xl p-3 shadow-xl"
+                                initial={{ scale: 0.95 }}
+                                animate={{ scale: 1 }}
+                                exit={{ scale: 0.95 }}
+                                transition={{ duration: 0.2 }}
+                            >
+
+                                {/* Reversed stack order */}
+                                {[...NAV_NODES].reverse().map((node, index) => (
+                                    <motion.a
+                                        key={node.id}
+                                        href={node.href}
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            handleNodeClick(node.id);
+                                        }}
+                                        initial={{ opacity: 0, x: -20 }}
+                                        animate={{ opacity: 1, x: 0 }}
+                                        transition={{ delay: index * 0.05 }}
+                                        className={`flex items-center gap-3 px-4 py-3 rounded-2xl transition-all duration-200 no-underline border-l-2 ${active === node.id
+                                            ? "bg-white/10 border-white"
+                                            : "border-transparent hover:bg-white/5 hover:border-gray-600"
+                                            }`}
+                                        whileHover={{ x: 4 }}
+                                        whileTap={{ scale: 0.98 }}
+                                    >
+                                        {/* Node dot */}
+                                        <motion.div
+                                            className={`w-1.5 h-1.5 rounded-full border ${active === node.id
+                                                ? "bg-white border-white"
+                                                : "border-gray-600"
+                                                }`}
+                                            animate={{
+                                                scale: active === node.id ? [1, 1.3, 1] : 1,
+                                            }}
+                                            transition={{
+                                                duration: 0.3,
+                                                repeat: active === node.id ? Infinity : 0,
+                                                repeatDelay: 2,
+                                            }}
+                                        />
+
+                                        {/* Label */}
+                                        <span
+                                            className={`text-xs font-semibold tracking-widest ${active === node.id ? "text-white" : "text-gray-500"
+                                                }`}
+                                        >
+                                            {node.label}
+                                        </span>
+
+                                        {/* Node index */}
+                                        <span className="mono text-[9px] text-gray-700 ml-auto">
+                                        </span>
+
+                                        {/* Complexity */}
+                                        <span className="mono text-[9px] text-gray-600 border border-gray-800 px-2 py-0.5 rounded">
+                                            {node.complexity}
+                                        </span>
+                                    </motion.a>
+                                ))}
+                            </motion.div>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
+            </motion.nav>
+        </>
     );
 }

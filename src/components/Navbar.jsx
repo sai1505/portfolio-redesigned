@@ -87,7 +87,7 @@ export default function Navbar() {
                             e.preventDefault();
                             handleNodeClick(0);
                         }}
-                        className="flex items-center gap-2 relative z-10 no-underline"
+                        className="flex items-center gap-2 mb-2 relative z-10 no-underline"
                     >
 
                         {/* arr[0] */}
@@ -105,12 +105,12 @@ export default function Navbar() {
                             whileHover={{ scale: 1.05 }}
                             transition={{ duration: 0.2 }}
                         >
-                            DEV.NAME
+                            B.S.V.R
                         </motion.span>
 
                         {/* * */}
                         <motion.span
-                            className="mono text-xs text-gray-500 mx-1"
+                            className="mono text-xs text-gray-500"
                             whileHover={{ rotate: 20, scale: 1.2 }}
                             transition={{ duration: 0.2 }}
                         >

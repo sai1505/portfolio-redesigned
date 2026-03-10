@@ -10,10 +10,10 @@ const Footer = () => {
     const currentYear = new Date().getFullYear();
 
     const socialLinks = [
-        { name: 'GitHub', icon: <GitHubIcon />, url: 'https://github.com/yourusername', address: '0x7F2A' },
-        { name: 'HackerRank', icon: <CodeIcon />, url: 'https://hackerrank.com/yourusername', address: '0x8B3C' },
-        { name: 'LinkedIn', icon: <LinkedInIcon />, url: 'https://linkedin.com/in/yourusername', address: '0x9D4E' },
-        { name: 'YouTube', icon: <YouTubeIcon />, url: 'https://youtube.com/@yourusername', address: '0xA1F0' },
+        { name: 'GitHub', icon: <GitHubIcon />, url: 'https://github.com/yourusername' },
+        { name: 'HackerRank', icon: <CodeIcon />, url: 'https://hackerrank.com/yourusername' },
+        { name: 'LinkedIn', icon: <LinkedInIcon />, url: 'https://linkedin.com/in/yourusername' },
+        { name: 'YouTube', icon: <YouTubeIcon />, url: 'https://youtube.com/@yourusername' },
     ];
 
     const isNodeActive = (index) => {
@@ -43,14 +43,14 @@ const Footer = () => {
         }
       `}</style>
 
-            <footer className="relative py-12 px-4 md:px-6">
+            <footer className="relative py-8 px-4 md:px-6">
                 <div className="max-w-7xl mx-auto">
                     <motion.div
                         initial={{ opacity: 0, y: 30 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
-                        className="bg-black/40 backdrop-blur-2xl border border-white/10 rounded-full px-8 md:px-12 py-2 md:py-2 shadow-2xl"
+                        className="bg-black/40 backdrop-blur-2xl border border-white/10 rounded-full px-4 sm:px-4 md:px-12 py-1.5 md:py-2 shadow-2xl"
                     >
                         {/* Main Content Container */}
                         <div className="flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-12">
@@ -75,21 +75,23 @@ const Footer = () => {
 
                                 {/* Copyright */}
                                 <div className="flex items-center gap-3 text-sm">
+
                                     <p className="text-white/80">
-                                        © {currentYear} <span className="font-semibold text-white">BSVR</span>
+                                        © {currentYear} <span className="text-white">BSVR</span>
                                     </p>
 
-                                    <span className="text-white/20">•</span>
+                                    <span className="hidden md:inline text-white/20">•</span>
 
-                                    <p className="text-white/40">
+                                    <p className="hidden md:block text-white/40">
                                         Design is the Key
                                     </p>
 
-                                    <span className="text-white/20">•</span>
+                                    <span className="hidden md:inline text-white/20">•</span>
 
-                                    <p className="text-white/40">
+                                    <p className="hidden md:block text-white/40">
                                         Crafted with <span className="mono text-white/70">O(∞)</span>
                                     </p>
+
                                 </div>
 
                             </div>
@@ -219,14 +221,6 @@ const Footer = () => {
                                 </motion.div>
                             </div>
                         </div>
-                        {/* Bottom Row - Tagline (Mobile) */}
-                        <motion.div
-                            initial={{ opacity: 0, y: 5 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.4 }}
-                            className="mt-3 pt-3 border-t border-white/5 text-center lg:hidden"
-                        >
-                        </motion.div>
                     </motion.div>
                 </div>
             </footer>

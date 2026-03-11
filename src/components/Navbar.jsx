@@ -1,13 +1,14 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
 const NAV_NODES = [
-    { id: 0, label: "HOME", href: "#home", complexity: "O(1)" },
-    { id: 1, label: "ABOUT", href: "#about", complexity: "Θ(1)" },
-    { id: 2, label: "SKILLS", href: "#skills", complexity: "O(n)" },
-    { id: 3, label: "PROJECTS", href: "#projects", complexity: "O(n log n)" },
+    { id: 0, label: "HOME", href: "/home", complexity: "O(1)" },
+    { id: 1, label: "ABOUT", href: "/about", complexity: "Θ(1)" },
+    { id: 2, label: "SKILLS", href: "/skills", complexity: "O(n)" },
+    { id: 3, label: "PROJECTS", href: "/projects", complexity: "O(n log n)" },
     { id: 4, label: "EXPERIENCE", href: "#experience", complexity: "O(t)" }, // t = timeline
-    { id: 5, label: "CONTACT", href: "#contact", complexity: "O(1)" },
+    { id: 5, label: "CONTACT", href: "/contact", complexity: "O(1)" },
 ];
 
 export default function Navbar() {
@@ -23,7 +24,7 @@ export default function Navbar() {
         return () => window.removeEventListener("scroll", onScroll);
     }, []);
 
-    const handleNodeClick = (id) => {
+    const handleNodeClick = (id, href) => {
         if (id === active) return;
 
         // Graph traversal animation
@@ -31,6 +32,7 @@ export default function Navbar() {
         setTimeout(() => {
             setActive(id);
             setTraversing(null);
+            navigate(href);
         }, 450);
         setMenuOpen(false);
     };
@@ -48,6 +50,8 @@ export default function Navbar() {
         const [lo, hi] = from < to ? [from, to] : [to, from];
         return index > lo && index <= hi;
     };
+
+    const navigate = useNavigate();
 
     return (
         <>
@@ -82,7 +86,7 @@ export default function Navbar() {
                 >
                     {/* Logo - DSA Style */}
                     <motion.a
-                        href="#home"
+                        href="/home"
                         onClick={(e) => {
                             e.preventDefault();
                             handleNodeClick(0);
@@ -145,7 +149,7 @@ export default function Navbar() {
                                     href={node.href}
                                     onClick={(e) => {
                                         e.preventDefault();
-                                        handleNodeClick(node.id);
+                                        handleNodeClick(node.id, node.href);
                                     }}
                                     onMouseEnter={() => setHovered(node.id)}
                                     onMouseLeave={() => setHovered(null)}
@@ -282,7 +286,7 @@ export default function Navbar() {
                                         href={node.href}
                                         onClick={(e) => {
                                             e.preventDefault();
-                                            handleNodeClick(node.id);
+                                            handleNodeClick(node.id, node.href);
                                         }}
                                         initial={{ opacity: 0, x: -20 }}
                                         animate={{ opacity: 1, x: 0 }}

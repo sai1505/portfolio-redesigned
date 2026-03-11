@@ -10,10 +10,20 @@ const Footer = () => {
     const currentYear = new Date().getFullYear();
 
     const socialLinks = [
-        { name: 'GitHub', icon: <GitHubIcon />, url: 'https://github.com/yourusername' },
-        { name: 'HackerRank', icon: <CodeIcon />, url: 'https://hackerrank.com/yourusername' },
-        { name: 'LinkedIn', icon: <LinkedInIcon />, url: 'https://linkedin.com/in/yourusername' },
-        { name: 'YouTube', icon: <YouTubeIcon />, url: 'https://youtube.com/@yourusername' },
+        { name: 'GitHub', icon: <GitHubIcon />, url: 'https://github.com/sai1505' },
+        {
+            name: "HackerRank",
+            icon: (
+                <img
+                    src="/icons/hackerrank.svg"
+                    alt="HackerRank"
+                    className="w-5 h-5 text-[#333]"
+                />
+            ),
+            url: "https://www.hackerrank.com/profile/22331A0519"
+        },
+        { name: 'LinkedIn', icon: <LinkedInIcon />, url: 'https://www.linkedin.com/in/bonamukkala-saivenkata-reddy-31196a259' },
+        { name: 'YouTube', icon: <YouTubeIcon />, url: 'https://www.youtube.com/@chakrireddy3672' },
     ];
 
     const isNodeActive = (index) => {
@@ -43,20 +53,19 @@ const Footer = () => {
         }
       `}</style>
 
-            <footer className="relative py-8 px-4 md:px-6">
+            <footer className="relative py-8 px-4 md:px-6 border-t border-white/10">
                 <div className="max-w-7xl mx-auto">
                     <motion.div
-                        initial={{ opacity: 0, y: 30 }}
+                        initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
-                        className="bg-black/40 backdrop-blur-2xl border border-white/10 rounded-full px-4 sm:px-4 md:px-12 py-1.5 md:py-2 shadow-2xl"
                     >
                         {/* Main Content Container */}
-                        <div className="flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-12">
+                        <div className="flex flex-col md:flex-row items-center justify-between gap-6 md:gap-8">
 
                             {/* Left Section - Head Pointer + Copyright */}
-                            <div className="flex items-center gap-3">
+                            <div className="flex items-center gap-3 order-2 md:order-1">
 
                                 {/* Head Pointer */}
                                 <motion.div
@@ -65,7 +74,6 @@ const Footer = () => {
                                     transition={{ delay: 0.2 }}
                                     className="hidden md:flex items-center gap-2"
                                 >
-
                                     <motion.div
                                         animate={{ scale: [1, 1.3, 1] }}
                                         transition={{ duration: 2, repeat: Infinity, repeatDelay: 2 }}
@@ -74,30 +82,27 @@ const Footer = () => {
                                 </motion.div>
 
                                 {/* Copyright */}
-                                <div className="flex items-center gap-3 text-sm">
-
+                                <div className="flex flex-col md:flex-row items-center gap-2 md:gap-3 text-sm">
                                     <p className="text-white/80">
-                                        © {currentYear} <span className="text-white">BSVR</span>
+                                        © {currentYear} <span className="text">BSVR. All rights reserved.</span>
                                     </p>
 
                                     <span className="hidden md:inline text-white/20">•</span>
 
-                                    <p className="hidden md:block text-white/40">
+                                    <p className="text-white/40 text-xs md:text-sm">
                                         Design is the Key
                                     </p>
 
-                                    <span className="hidden md:inline text-white/20">•</span>
+                                    <span className="hidden lg:inline text-white/20">•</span>
 
-                                    <p className="hidden md:block text-white/40">
+                                    <p className="hidden lg:block text-white/40 text-sm">
                                         Crafted with <span className="mono text-white/70">O(∞)</span>
                                     </p>
-
                                 </div>
-
                             </div>
 
-                            {/* Center Section - Linked List Nodes */}
-                            <div className="flex items-center gap-0 rounded-full p-3 md:p-4">
+                            {/* Center/Right Section - Linked List Nodes */}
+                            <div className="flex items-center gap-0 order-1 md:order-2">
                                 {socialLinks.map((social, index) => (
                                     <div key={social.name} className="flex items-center">
                                         {/* Node Container */}
@@ -105,10 +110,9 @@ const Footer = () => {
                                             onMouseEnter={() => setHoveredIndex(index)}
                                             onMouseLeave={() => setHoveredIndex(null)}
                                             className="relative group"
-                                            whileHover={{ scale: 1.05 }}
+                                            whileHover={{ scale: 1.08 }}
                                             whileTap={{ scale: 0.95 }}
                                         >
-
                                             {/* Node Link */}
                                             <a
                                                 href={social.url}
@@ -128,19 +132,27 @@ const Footer = () => {
                                                         duration: 0.3,
                                                         ease: [0.4, 0, 0.2, 1]
                                                     }}
-                                                    className="w-10 h-10 md:w-12 md:h-12 flex items-center justify-center border-2 rounded-full relative overflow-hidden"
+                                                    className="w-11 h-11 md:w-12 md:h-12 flex items-center justify-center border-2 rounded-full relative overflow-hidden"
                                                 >
                                                     {/* Icon */}
                                                     <motion.div
                                                         animate={{
-                                                            color: isNodeActive(index) ? '#fff' : '#666',
+                                                            color: isNodeActive(index) ? '#fff' : '#666666',
                                                             scale: isNodeActive(index) ? 1.15 : 1,
                                                         }}
                                                         transition={{ duration: 0.3 }}
                                                     >
-                                                        {React.cloneElement(social.icon, {
-                                                            sx: { fontSize: { xs: 18, md: 20 } }
-                                                        })}
+                                                        {social.name === "HackerRank" ? (
+                                                            <img
+                                                                src="/icons/hackerrank.svg"
+                                                                alt="HackerRank"
+                                                                style={{ width: 20, height: 20, opacity: isNodeActive(index) ? 1 : 0.6 }}
+                                                            />
+                                                        ) : (
+                                                            React.cloneElement(social.icon, {
+                                                                sx: { fontSize: { xs: 19, md: 20 } }
+                                                            })
+                                                        )}
                                                     </motion.div>
 
                                                     {/* Pulsing active indicator */}
@@ -163,12 +175,12 @@ const Footer = () => {
                                                     {(hoveredIndex === index) && (
                                                         <motion.div
                                                             initial={{ opacity: 0, y: -5 }}
-                                                            animate={{ opacity: 1, y: 0 }}
+                                                            animate={{ opacity: 1, y: -5 }}
                                                             exit={{ opacity: 0, y: -5 }}
                                                             transition={{ duration: 0.2 }}
                                                             className="absolute top-full left-1/2 -translate-x-1/2 mt-2 whitespace-nowrap"
                                                         >
-                                                            <div className="text-[10px] font-medium text-white px-2 py-1 bg-black/80 border border-white/20 rounded-md">
+                                                            <div className="text-[10px] font-medium text-white px-2 py-1 bg-black/90 border border-white/20 rounded-md">
                                                                 {social.name}
                                                             </div>
                                                         </motion.div>
@@ -179,17 +191,17 @@ const Footer = () => {
 
                                         {/* Pointer Arrow between nodes */}
                                         {index < socialLinks.length - 1 && (
-                                            <div className="flex items-center mx-1.5 md:mx-2">
+                                            <div className="flex items-center mx-2 md:mx-2.5">
                                                 <motion.div
                                                     animate={{
                                                         color: isPointerActive(index) ? '#fff' : '#333',
-                                                        x: isPointerActive(index) ? [0, 3, 0] : 0,
+                                                        x: isPointerActive(index) ? [0, 4, 0] : 0,
                                                     }}
                                                     transition={{
                                                         color: { duration: 0.3 },
                                                         x: { duration: 0.6, repeat: isPointerActive(index) ? Infinity : 0 }
                                                     }}
-                                                    className="mono text-base md:text-lg"
+                                                    className="mono text-lg"
                                                 >
                                                     →
                                                 </motion.div>
@@ -199,12 +211,12 @@ const Footer = () => {
                                 ))}
 
                                 {/* Final Arrow to NULL */}
-                                <div className="flex items-center mx-1.5 md:mx-2">
+                                <div className="flex items-center mx-2 md:mx-2.5">
                                     <motion.div
                                         animate={{
                                             color: hoveredIndex === socialLinks.length - 1 ? '#fff' : '#333',
                                         }}
-                                        className="mono text-base md:text-lg"
+                                        className="mono text-lg"
                                     >
                                         →
                                     </motion.div>
@@ -215,7 +227,7 @@ const Footer = () => {
                                     animate={{
                                         color: hoveredIndex === socialLinks.length - 1 ? '#fff' : '#555',
                                     }}
-                                    className="mono text-xs font-semibold flex items-center gap-1 px-2"
+                                    className="mono text-xs font-semibold flex items-center gap-1"
                                 >
                                     <span>NULL</span>
                                 </motion.div>

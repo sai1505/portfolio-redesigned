@@ -1,22 +1,23 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const NAV_NODES = [
-    { id: 0, label: "HOME", href: "/home", complexity: "O(1)" },
+    { id: 0, label: "HOME", href: "/", complexity: "O(1)" },
     { id: 1, label: "ABOUT", href: "/about", complexity: "Θ(1)" },
     { id: 2, label: "SKILLS", href: "/skills", complexity: "O(n)" },
     { id: 3, label: "PROJECTS", href: "/projects", complexity: "O(n log n)" },
-    { id: 4, label: "EXPERIENCE", href: "#experience", complexity: "O(t)" }, // t = timeline
-    { id: 5, label: "CONTACT", href: "/contact", complexity: "O(1)" },
+    { id: 4, label: "CONTACT", href: "/contact", complexity: "O(1)" },
 ];
 
 export default function Navbar() {
-    const [active, setActive] = useState(0);
+    const location = useLocation();
     const [hovered, setHovered] = useState(null);
     const [traversing, setTraversing] = useState(null);
     const [menuOpen, setMenuOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
+
+    const active = NAV_NODES.find(n => n.href === location.pathname)?.id ?? 0;
 
     useEffect(() => {
         const onScroll = () => setScrolled(window.scrollY > 20);
@@ -30,7 +31,6 @@ export default function Navbar() {
         // Graph traversal animation
         setTraversing({ from: active, to: id });
         setTimeout(() => {
-            setActive(id);
             setTraversing(null);
             navigate(href);
         }, 450);
@@ -86,10 +86,10 @@ export default function Navbar() {
                 >
                     {/* Logo - DSA Style */}
                     <motion.a
-                        href="/home"
+                        href="/"
                         onClick={(e) => {
                             e.preventDefault();
-                            handleNodeClick(0);
+                            handleNodeClick(0, "/");
                         }}
                         className="flex items-center gap-2 mb-2 relative z-10 no-underline"
                     >

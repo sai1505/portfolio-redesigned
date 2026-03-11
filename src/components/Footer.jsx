@@ -53,7 +53,7 @@ const Footer = () => {
         }
       `}</style>
 
-            <footer className="relative py-8 px-4 md:px-6 border-t border-white/10">
+            <footer className="py-8 px-4 z-50 md:px-6 border-t border-white/10 bg-black">
                 <div className="max-w-7xl mx-auto">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}

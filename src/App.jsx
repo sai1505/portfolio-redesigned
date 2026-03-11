@@ -1,33 +1,39 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Navbar from './components/Navbar';
-import Footer from './components/Footer';
-import Home from './pages/Home';
-import About from './pages/About';
-import Projects from './pages/Projects';
-import Skills from './pages/Skills';
-import Contact from './pages/Contact';
+import { Routes, Route, useLocation } from 'react-router-dom'
+import { AnimatePresence } from 'framer-motion'
+import Layout from './Layouts/layout'
+import Home from './pages/Home'
+import About from './pages/About'
+import Skills from './pages/Skills'
+import Projects from './pages/Projects'
+import Contact from './pages/Contact'
+import SystemStatus from './UI/SystemStatus'
+import ClickSpark from './UI/ClickSpark'
 
-function App() {
+export default function App() {
+  const location = useLocation()
+
   return (
-    <Router>
-      <div className="flex flex-col min-h-screen bg-black">
-        <Navbar />
+    <ClickSpark
+      sparkColor="#ffffff"
+      sparkSize={14}
+      sparkRadius={25}
+      sparkCount={12}
+      duration={600}
+    >
+      <SystemStatus />
 
-        <main className="flex-grow">
-          <Routes>
+      <Layout>
+        <AnimatePresence mode="wait">
+          <Routes location={location} key={location.pathname}>
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
-            <Route path="/projects" element={<Projects />} />
             <Route path="/skills" element={<Skills />} />
+            <Route path="/projects" element={<Projects />} />
             <Route path="/contact" element={<Contact />} />
           </Routes>
-        </main>
+        </AnimatePresence>
+      </Layout>
 
-        <Footer />
-      </div>
-    </Router>
-  );
+    </ClickSpark>
+  )
 }
-
-export default App;

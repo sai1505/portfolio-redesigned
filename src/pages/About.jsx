@@ -1,221 +1,187 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import DownloadIcon from '@mui/icons-material/Download';
-import GitHubIcon from '@mui/icons-material/GitHub';
-import LinkedInIcon from '@mui/icons-material/LinkedIn';
+import { useRef } from 'react'
+import { motion, useInView } from 'framer-motion'
+import PageWrapper from '../UI/PageWrapper'
 
-gsap.registerPlugin(ScrollTrigger);
-
-const identities = [
+const TIMELINE = [
     {
-        label: 'App Development',
-        description: 'Building scalable, high-quality mobile apps with clean architecture.',
+        id: '0x001',
+        year: '2018',
+        title: 'Education Init',
+        subtitle: 'B.Sc. Computer Science',
+        desc: 'Enrolled in Computer Science. First exposure to algorithms, data structures, and the beautiful madness of recursion. Wrote my first "Hello World" and never looked back.',
+        tags: ['C', 'Python', 'Algorithms', 'Mathematics'],
+        type: 'HEAD',
     },
     {
-        label: 'UI/UX Design',
-        description: 'Designing intuitive and visually polished interfaces for real users.',
+        id: '0x002',
+        year: '2019',
+        title: 'First Compilation',
+        subtitle: 'Discovered Web Development',
+        desc: 'Built my first website — a personal page in raw HTML/CSS. Realized I loved making things people could see and touch. Started learning JavaScript obsessively.',
+        tags: ['HTML', 'CSS', 'JavaScript', 'jQuery'],
+        type: 'NODE',
     },
     {
-        label: 'Tech Agnostic Solution',
-        description: 'Choosing the right technology for the problem—and not the other way around.',
+        id: '0x003',
+        year: '2021',
+        title: 'Framework Adoption',
+        subtitle: 'React & Modern Stack',
+        desc: 'Deep-dived into React ecosystem. Component thinking changed how I approach problems. Built my first full-stack project — a real-time task manager.',
+        tags: ['React', 'Node.js', 'MongoDB', 'REST APIs'],
+        type: 'NODE',
     },
     {
-        label: 'Performance Optimization',
-        description: 'Fixing bottlenecks and speeding up apps, websites, and APIs.',
+        id: '0x004',
+        year: '2022',
+        title: 'Production Push',
+        subtitle: 'First Real-World Deployment',
+        desc: 'Shipped features used by thousands of users. Learned the gap between local dev and production reality. Performance, accessibility, and edge cases became my obsession.',
+        tags: ['TypeScript', 'PostgreSQL', 'Docker', 'AWS'],
+        type: 'NODE',
     },
     {
-        label: 'Real-Time Problem Solver',
-        description: 'Debugging complex issues and delivering fast, reliable solutions.',
+        id: '0x005',
+        year: '2024',
+        title: 'Current State',
+        subtitle: 'Full Stack + AI Integration',
+        desc: 'Building modern web applications with AI capabilities. Focused on developer experience, system design, and creating tools that other developers love to use.',
+        tags: ['Next.js', 'LLM APIs', 'System Design', 'DevEx'],
+        type: 'NODE',
     },
     {
-        label: 'Full Stack Web Development',
-        description: 'End-to-end web apps—from backend logic to sleek frontend UI.',
-    }
-];
-
-
-const education = [
-    {
-        degree: 'B.Tech Computer Science',
-        institution: 'JNTU Kakinada',
-        years: '2022 - 2026',
+        id: '0x006',
+        year: 'NEXT',
+        title: 'Null Pointer →',
+        subtitle: 'Future Goals',
+        desc: 'Contributing to open source. Building something that scales. Writing about systems and architecture. The list keeps growing — that\'s the point.',
+        tags: ['Open Source', 'Scalability', 'Leadership', '?'],
+        type: 'TAIL',
     },
-    {
-        degree: 'Intermediate (MPC)',
-        institution: 'Sri Chaitanya',
-        years: '2020 - 2022',
-    }
-];
+]
 
-export default function About() {
-    const containerRef = useRef(null);
-    const titleRef = useRef(null);
-    const bioRef = useRef(null);
-    const identitiesRef = useRef([]);
-    const educationRef = useRef([]);
-    const [hoveredIndex, setHoveredIndex] = useState(null);
-
-    useEffect(() => {
-        const ctx = gsap.context(() => {
-            // Title entrance
-            gsap.from(titleRef.current.children, {
-                opacity: 0,
-                y: 100,
-                duration: 1.2,
-                stagger: 0.08,
-                ease: 'power4.out',
-                delay: 0.3
-            });
-
-            // Bio section
-            gsap.from(bioRef.current, {
-                opacity: 0,
-                y: 60,
-                duration: 1,
-                delay: 0.8,
-                ease: 'power3.out'
-            });
-
-            // Identity cards scroll trigger
-            ScrollTrigger.batch(identitiesRef.current, {
-                onEnter: (batch) => {
-                    gsap.from(batch, {
-                        opacity: 0,
-                        y: 80,
-                        duration: 0.9,
-                        stagger: 0.15,
-                        ease: 'power3.out'
-                    });
-                },
-                start: 'top 85%'
-            });
-
-            // Education cards
-            ScrollTrigger.batch(educationRef.current, {
-                onEnter: (batch) => {
-                    gsap.from(batch, {
-                        opacity: 0,
-                        x: -60,
-                        duration: 0.8,
-                        stagger: 0.2,
-                        ease: 'power3.out'
-                    });
-                },
-                start: 'top 85%'
-            });
-
-        }, containerRef);
-
-        return () => ctx.revert();
-    }, []);
-
-    const handleMouseEnter = (index, ref) => {
-        setHoveredIndex(index);
-        gsap.to(ref, {
-            scale: 1.02,
-            duration: 0.4,
-            ease: 'power2.out'
-        });
-    };
-
-    const handleMouseLeave = (ref) => {
-        setHoveredIndex(null);
-        gsap.to(ref, {
-            scale: 1,
-            duration: 0.4,
-            ease: 'power2.out'
-        });
-    };
+function LinkedListNode({ node, index }) {
+    const ref = useRef(null)
+    const inView = useInView(ref, { once: true, margin: '-80px' })
 
     return (
-        <div ref={containerRef} className="min-h-screen pt-32 pb-20 px-8 bg-black">
-            <div className="max-w-6xl mx-auto">
-                {/* Title */}
-                <h1 ref={titleRef} className="text-6xl md:text-8xl font-black text-white text-center mb-20 tracking-tight"
-                    style={{ fontFamily: "'Poppins', sans-serif" }}>
-                    {['W', 'h', 'o', ' ', 'I', ' ', 'A', 'm'].map((char, i) => (
-                        <span key={i} className="inline-block" style={{ marginRight: char === ' ' ? '1.5rem' : '0' }}>
-                            {char === ' ' ? '\u00A0' : char}
+        <motion.div
+            ref={ref}
+            initial={{ opacity: 0, x: -40 }}
+            animate={inView ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+            className="relative"
+        >
+            {/* Node block */}
+            <div className="flex items-stretch gap-0">
+                {/* Memory address sidebar */}
+                <div className="flex flex-col items-center justify-center w-16 shrink-0 border-r border-white/10 pr-4">
+                    <span className="font-mono text-xs text-white/20 rotate-[-90deg] whitespace-nowrap tracking-widest">
+                        {node.id}
+                    </span>
+                </div>
+
+                {/* Main node content */}
+                <div className="flex-1 border border-white/15 hover:border-white/30 transition-colors duration-300 mx-4 my-2 bg-black group">
+                    {/* Node header */}
+                    <div className="flex items-center justify-between border-b border-white/10 px-5 py-2">
+                        <div className="flex items-center gap-3">
+                            <span className="font-mono text-xs text-white/30">{node.type}</span>
+                            <span className="w-px h-3 bg-white/15" />
+                            <span className="font-mono text-xs text-white/50 tracking-widest">{node.year}</span>
+                        </div>
+                        <div className="flex items-center gap-1">
+                            <span className="font-mono text-xs text-white/20">next →</span>
+                        </div>
+                    </div>
+
+                    {/* Node body */}
+                    <div className="px-5 py-4">
+                        <h3 className="font-mono text-base font-bold text-white tracking-tight mb-1">{node.title}</h3>
+                        <p className="font-mono text-xs text-white/40 mb-3 tracking-wide">{node.subtitle}</p>
+                        <p className="font-sans text-sm text-white/60 leading-relaxed mb-4">{node.desc}</p>
+
+                        {/* Tags */}
+                        <div className="flex flex-wrap gap-2">
+                            {node.tags.map(tag => (
+                                <span key={tag} className="font-mono text-xs px-2 py-0.5 border border-white/15 text-white/40 hover:border-white/40 hover:text-white/70 transition-colors">
+                                    {tag}
+                                </span>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Pointer field */}
+                    <div className="border-t border-white/10 px-5 py-2 flex items-center justify-between">
+                        <span className="font-mono text-xs text-white/15">data: 0x{(index * 1024).toString(16).toUpperCase().padStart(4, '0')}</span>
+                        <span className="font-mono text-xs text-white/15">
+                            ptr: {node.type === 'TAIL' ? 'NULL' : `0x${((index + 1) * 1024).toString(16).toUpperCase().padStart(4, '0')}`}
                         </span>
-                    ))}
-                </h1>
-
-                {/* Bio Section */}
-                <div ref={bioRef} className="bg-black border-2 border-white/10 rounded-[3rem] px-8 md:px-16 py-16 mb-20">
-                    <p className="text-lg md:text-xl text-white/90 leading-relaxed mb-12 max-w-4xl mx-auto text-center text-justify">
-                        Computer Science undergraduate with a deep-seated passion for problem-solving.
-                        I leverage hands-on experience in Java, Python, mobile app development, and data science to deliver impactful solutions for real-world challenges.
-                        I have a proven record of building scalable projects and am driven by my interests in machine learning, full-stack development, and open-source advocacy.
-                    </p>
-
-
-                    <div className="flex flex-wrap gap-6 justify-center items-center">
-                        <a href="/resume.pdf" download
-                            className="flex items-center gap-3 px-24 py-4 bg-white text-black rounded-full font-black text-sm uppercase tracking-widest hover:bg-black hover:text-white hover:border-2 hover:border-white transition-all duration-300"
-                            style={{ fontFamily: "'Poppins', sans-serif" }}>
-                            <DownloadIcon sx={{ fontSize: 20 }} />
-                            Resume
-                        </a>
                     </div>
                 </div>
 
-                {/* Identity Cards with Hover Reveal */}
-                <h2 className="text-4xl md:text-6xl font-black text-white text-center mb-16 uppercase tracking-widest"
-                    style={{ fontFamily: "'Poppins', sans-serif" }}>
-                    What I Do
-                </h2>
-
-                <div className="grid md:grid-cols-2 gap-8 mb-24">
-                    {identities.map((identity, index) => (
-                        <div
-                            key={identity.label}
-                            ref={el => identitiesRef.current[index] = el}
-                            onMouseEnter={(e) => handleMouseEnter(index, e.currentTarget)}
-                            onMouseLeave={(e) => handleMouseLeave(e.currentTarget)}
-                            className="relative bg-black border-2 border-white/10 rounded-3xl p-10 md:p-12 overflow-hidden cursor-default group"
-                        >
-                            {/* Background reveal overlay */}
-                            <div className={`absolute inset-0 bg-white transition-all duration-500 ${hoveredIndex === index ? 'opacity-100' : 'opacity-0'}`}
-                                style={{ zIndex: 1 }} />
-
-                            <div className="relative" style={{ zIndex: 2 }}>
-                                <h3 className={`text-3xl md:text-4xl font-black mb-6 transition-colors duration-500 ${hoveredIndex === index ? 'text-black' : 'text-white'}`}
-                                    style={{ fontFamily: "'Poppins', sans-serif" }}>
-                                    {identity.label}
-                                </h3>
-
-                                <p className={`text-base md:text-lg leading-relaxed mb-6 transition-colors duration-500 ${hoveredIndex === index ? 'text-black/80' : 'text-white/70'}`}>
-                                    {identity.description}
-                                </p>
-                            </div>
+                {/* Right pointer visual */}
+                <div className="w-16 shrink-0 flex items-center justify-center">
+                    {node.type !== 'TAIL' ? (
+                        <div className="flex flex-col items-center gap-1">
+                            <span className="font-mono text-xs text-white/20">→</span>
                         </div>
-                    ))}
-                </div>
-
-                {/* Education */}
-                <h2 className="text-4xl md:text-6xl font-black text-white text-center mb-16 uppercase tracking-widest"
-                    style={{ fontFamily: "'Poppins', sans-serif" }}>
-                    Education
-                </h2>
-
-                <div className="space-y-6 max-w-3xl mx-auto">
-                    {education.map((edu, index) => (
-                        <div
-                            key={edu.degree}
-                            ref={el => educationRef.current[index] = el}
-                            className="bg-black border-2 border-white/10 rounded-3xl p-8 md:p-10 hover:border-white/30 transition-all duration-300 tracking-wide"
-                        >
-                            <h3 className="text-2xl md:text-3xl font-black text-white mb-2"
-                                style={{ fontFamily: "'Poppins', sans-serif" }}>
-                                {edu.degree}
-                            </h3>
-                            <p className="text-white/70 text-lg mb-1">{edu.institution}</p>
-                            <p className="text-white/50 text-sm font-mono">{edu.years}</p>
-                        </div> 
-                    ))}
+                    ) : (
+                        <span className="font-mono text-xs text-white/20">∅</span>
+                    )}
                 </div>
             </div>
-        </div>
-    );
+
+            {/* Connector line between nodes */}
+            {node.type !== 'TAIL' && (
+                <div className="flex ml-16 pl-4">
+                    <div className="w-px h-6 bg-white/10 ml-4" />
+                    <div className="font-mono text-xs text-white/15 ml-2 flex items-center">traverse()</div>
+                </div>
+            )}
+        </motion.div>
+    )
+}
+
+export default function About() {
+    return (
+        <PageWrapper>
+            <div className="max-w-3xl mx-auto px-6 py-16">
+                {/* Page header */}
+                <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5 }}
+                    className="mb-16"
+                >
+                    <div className="font-mono text-xs text-white/30 mb-3 tracking-widest">STRUCTURE: LINKED_LIST</div>
+                    <h1 className="font-mono text-3xl font-black text-white tracking-tight mb-2">About</h1>
+                    <p className="font-mono text-xs text-white/30">
+                        {'// Sequential traversal from HEAD → TAIL'}
+                    </p>
+                    <div className="mt-4 font-mono text-xs text-white/20">
+                        <span>LinkedList&lt;Milestone&gt; journey = new LinkedList();</span>
+                    </div>
+                </motion.div>
+
+                {/* Linked list */}
+                <div className="relative">
+                    {TIMELINE.map((node, i) => (
+                        <LinkedListNode key={node.id} node={node} index={i} />
+                    ))}
+                </div>
+
+                {/* Footer annotation */}
+                <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 1 }}
+                    className="mt-12 font-mono text-xs text-white/20 border-t border-white/10 pt-6"
+                >
+                    <div>// End of list traversal</div>
+                    <div>// Total nodes: {TIMELINE.length} | Time complexity: O(n)</div>
+                    <div>// Space complexity: O(n)</div>
+                </motion.div>
+            </div>
+        </PageWrapper>
+    )
 }

@@ -451,14 +451,6 @@ export default function Home() {
                     })()}
                 </motion.svg>
             </div>
-
-            {/* Bottom right legend */}
-            <div className="fixed bottom-8 right-8 font-mono text-xs text-white/20 text-right z-10 pointer-events-none select-none">
-                <div>adj. matrix: 5×5</div>
-                <div>type: undirected weighted</div>
-                <div>traversal: BFS ready</div>
-                <div className="mt-1 opacity-40">world: {WORLD_W}×{WORLD_H}</div>
-            </div>
         </PageWrapper>
     )
 }

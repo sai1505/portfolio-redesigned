@@ -1,44 +1,149 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import PageWrapper from '../UI/PageWrapper'
-
 const PROJECTS = [
     {
-        id: 'p003',
+        id: 'p011',
         title: 'XCropAI',
         subtitle: 'AI Crop Disease Detection Platform',
-        year: 'Oct–Dec 2025',
+        year: '2025',
         stack: ['React', 'Supabase', 'PostgreSQL', 'GROQ Models', 'FastAPI'],
         desc: 'AI-driven crop disease detection and advisory platform using multimodal LLMs. Built scalable FastAPI services that cut manual analysis time by 60%.',
-        status: 'PRODUCTION',
-        links: { github: 'https://github.com/sai1505', live: null },
-        complexity: 'O(n log n)',
-    },
-    {
-        id: 'p002',
-        title: 'Tax Suthradhar',
-        subtitle: 'AI Tax Alert & Compliance System',
-        year: 'Jul–Oct 2025',
-        stack: ['React.js', 'Node.js', 'Express.js', 'LangChain', 'GROQ', 'Cloudflare-R2', 'FastAPI'],
-        desc: 'Tracks 100+ tax policies and automates compliance 70% faster with 100% legal accuracy. Uses Docling for document parsing and multi-agent orchestration.',
-        status: 'PRODUCTION',
-        links: { github: 'https://github.com/sai1505', live: null },
+        type: 'WEBSITE',
+        links: {
+            github: 'https://github.com/sai1505/XCropAI'
+        },
         complexity: 'O(n)',
     },
+
     {
-        id: 'p001',
+        id: 'p010',
+        title: 'Tax Suthradhar',
+        subtitle: 'AI Tax Alert & Compliance System',
+        year: '2025',
+        stack: ['React.js', 'Node.js', 'Express.js', 'LangChain', 'GROQ Models', 'Cloudflare-R2', 'Docling', 'FastAPI'],
+        desc: 'Tracks 100+ tax policies and automates compliance 70% faster with 100% legal accuracy using AI agents.',
+        type: 'WEBSITE',
+        links: {
+            github: 'https://github.com/sai1505/TaxSuthradhar'
+        },
+        complexity: 'O(n)',
+    },
+
+    {
+        id: 'p009',
+        title: 'Therapy Chatbot',
+        subtitle: 'AI Mental Health Support Assistant',
+        year: '2025',
+        stack: ['HTML', 'CSS', 'JS', 'Cohere API', 'Python', 'Flask'],
+        desc: 'A compassionate AI companion offering a safe space and a listening ear for when users feel depressed or lonely.',
+        type: 'WEBSITE',
+        links: {
+            github: 'https://github.com/sai1505/DBMS_PROJECT'
+        },
+        complexity: 'O(n)',
+    },
+
+    {
+        id: 'p008',
         title: 'Sky Stream',
         subtitle: 'Android Video Streaming App',
-        year: 'Feb–Mar 2025',
+        year: '2025',
         stack: ['Java', 'Android Studio', 'Google Drive API'],
-        desc: 'Android app to stream videos directly from Google Drive links. Implemented secure access and seamless UX — reduced buffering by 15%.',
-        status: 'COMPLETE',
-        links: { github: 'https://github.com/sai1505', live: null },
+        desc: 'Android app to stream videos directly from Google Drive links with secure access and optimized playback.',
+        type: 'ANDROID_APP',
+        links: {
+            github: 'https://github.com/sai1505/SkyStreamwebsite'
+        },
+        complexity: 'O(1)',
+    },
+
+    {
+        id: 'p007',
+        title: 'Digitalized Finance',
+        subtitle: 'Banking Web Application',
+        year: '2024',
+        stack: ['HTML', 'CSS', 'JS', 'PHP', 'MySQL'],
+        desc: 'A responsive banking website supporting debit/credit transactions, loan systems, and a secure login system.',
+        type: 'WEBSITE',
+        links: {
+            github: 'https://github.com/sai1505/DBMS_PROJECT'
+        },
+        complexity: 'O(n)',
+    },
+
+    {
+        id: 'p006',
+        title: 'PDF Language Converter',
+        subtitle: 'OCR Document Translation Tool',
+        year: '2024',
+        stack: ['HTML', 'CSS', 'JS', 'Flask', 'Python'],
+        desc: 'A real-time PDF language converter translating English PDFs to Telugu using OCR technology.',
+        type: 'WEBSITE',
+        links: {
+            github: 'https://github.com/sai1505/AITTPBL'
+        },
+        complexity: 'O(n)',
+    },
+
+    {
+        id: 'p005',
+        title: 'ATM System',
+        subtitle: 'Java Banking Simulation',
+        year: '2024',
+        stack: ['Java Swing', 'Java JDBC', 'MySQL'],
+        desc: 'A Java-based ATM system implementing banking operations using UML-based design.',
+        type: 'WEBSITE',
+        links: {
+            github: 'https://github.com/sai1505/pblOOP'
+        },
+        complexity: 'O(n)',
+    },
+
+    {
+        id: 'p004',
+        title: 'To Do List App',
+        subtitle: 'Android Task Manager',
+        year: '2024',
+        stack: ['Android Studio', 'XML', 'Java'],
+        desc: 'A productivity app allowing users to create, manage, and delete daily tasks efficiently.',
+        type: 'ANDROID_APP',
+        links: {
+            github: 'https://github.com/sai1505/CodSoftAssignment01'
+        },
+        complexity: 'O(1)',
+    },
+
+    {
+        id: 'p003',
+        title: 'Random Quotes App',
+        subtitle: 'Daily Motivation Android App',
+        year: '2024',
+        stack: ['Android Studio', 'XML', 'Java'],
+        desc: 'Displays inspirational quotes to motivate users and refresh their mindset daily.',
+        type: 'ANDROID_APP',
+        links: {
+            github: 'https://github.com/sai1505/CodSoftAssignment02'
+        },
+        complexity: 'O(1)',
+    },
+
+    {
+        id: 'p002',
+        title: 'Alarms App',
+        subtitle: 'Android Alarm Manager',
+        year: '2024',
+        stack: ['Android Studio', 'XML', 'Java'],
+        desc: 'A simple Android application to set and manage alarms efficiently.',
+        type: 'ANDROID_APP',
+        links: {
+            github: 'https://github.com/sai1505/CodSoftAssignment03'
+        },
         complexity: 'O(1)',
     },
 ]
 
-const STATUS_COLORS = {
+const type_COLORS = {
     PRODUCTION: { border: 'rgba(255,255,255,0.55)', color: '#fff' },
     COMPLETE: { border: 'rgba(255,255,255,0.35)', color: 'rgba(255,255,255,0.7)' },
     ARCHIVED: { border: 'rgba(255,255,255,0.2)', color: 'rgba(255,255,255,0.4)' },
@@ -160,7 +265,7 @@ export default function Projects() {
                             const isTop = i === 0
                             const depth = STACK_SIZE - 1 - i  // 0 = bottom
                             const isPopping = popping === project.id
-                            const sc = STATUS_COLORS[project.status] || STATUS_COLORS.ARCHIVED
+                            const sc = type_COLORS[project.type] || type_COLORS.ARCHIVED
 
                             return (
                                 <motion.div
@@ -234,7 +339,7 @@ export default function Projects() {
                                                         className="font-mono text-xs px-2.5 py-1"
                                                         style={{ border: `1px solid ${sc.border}`, color: sc.color }}
                                                     >
-                                                        {project.status}
+                                                        {project.type}
                                                     </span>
                                                     <span className="font-mono text-xs text-white/28">{project.year}</span>
 
@@ -311,16 +416,6 @@ export default function Projects() {
                                                             >
                                                                 → GitHub
                                                             </a>
-                                                            {project.links.live && (
-                                                                <a
-                                                                    href={project.links.live}
-                                                                    target="_blank" rel="noopener noreferrer"
-                                                                    className="font-mono text-sm text-white/45 hover:text-white transition-colors"
-                                                                    style={{ borderBottom: '1px solid rgba(255,255,255,0.18)', paddingBottom: 1 }}
-                                                                >
-                                                                    → Live Demo
-                                                                </a>
-                                                            )}
                                                         </div>
                                                     </div>
                                                 </motion.div>
@@ -355,17 +450,6 @@ export default function Projects() {
                         </div>
                     </div>
                 </div>
-
-                {/* ── Footer ── */}
-                <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.9 }}
-                    className="mt-10 font-mono text-xs text-white/20 border-t border-white/10 pt-6"
-                >
-                    <div>// push(): O(1) | pop(): O(1) | peek(): O(1)</div>
-                    <div>// Stack size: {STACK_SIZE} | Max capacity: ∞ | overflow: never</div>
-                </motion.div>
             </div>
         </PageWrapper>
     )

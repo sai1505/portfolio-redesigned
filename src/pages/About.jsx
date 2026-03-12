@@ -107,6 +107,8 @@ const VOLUNTEER = [
     },
 ]
 
+const RESUME_LINK = 'https://docs.google.com/document/d/13ThEehi02BopZGaJLIjmfOB7plL6Zh7Nki4mxSWrJSY/edit?usp=sharing'
+
 const SECTIONS = [
     { key: 'bio', label: 'BIO', struct: 'RECORD', data: null },
     { key: 'education', label: 'EDUCATION', struct: 'LINKED_LIST', data: EDUCATION },
@@ -288,26 +290,41 @@ export default function About() {
                     </p>
                 </motion.div>
 
-                {/* Section tabs */}
+                {/* Section tabs + Resume button */}
                 <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 0.15 }}
-                    className="flex items-center gap-px mb-10 border border-white/12 w-fit"
+                    className="flex items-center gap-3 mb-10"
                 >
-                    {SECTIONS.map((s, i) => (
-                        <button
-                            key={s.key}
-                            onClick={() => setActiveSection(s.key)}
-                            className={`relative font-mono text-xs px-4 py-2.5 transition-all ${activeSection === s.key
-                                ? 'bg-white text-black'
-                                : 'text-white/35 hover:text-white/70 hover:bg-white/5'
-                                } ${i !== 0 ? 'border-l border-white/12' : ''}`}
-                        >
-                            <span className="text-[14px] opacity-50 mr-1">[{s.struct.charAt(0)}]</span>
-                            {s.label}
-                        </button>
-                    ))}
+                    {/* Tabs */}
+                    <div className="flex items-center gap-px border border-white/12 w-fit">
+                        {SECTIONS.map((s, i) => (
+                            <button
+                                key={s.key}
+                                onClick={() => setActiveSection(s.key)}
+                                className={`relative font-mono text-xs px-4 py-2.5 transition-all ${activeSection === s.key
+                                    ? 'bg-white text-black'
+                                    : 'text-white/35 hover:text-white/70 hover:bg-white/5'
+                                    } ${i !== 0 ? 'border-l border-white/12' : ''}`}
+                            >
+                                <span className="text-[14px] opacity-50 mr-1">[{s.struct.charAt(0)}]</span>
+                                {s.label}
+                            </button>
+                        ))}
+                    </div>
+
+                    {/* Resume button */}
+                    <a
+                        href={RESUME_LINK}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="font-mono text-xs px-4 py-2.5 border border-white/12 text-white/35 hover:text-white hover:border-white/50 hover:bg-white/5 transition-all flex items-center gap-2"
+                    >
+                        <span className="text-[14px] opacity-50">[R]</span>
+                        RESUME
+                        <span className="text-white/20">↗</span>
+                    </a>
                 </motion.div>
 
                 {/* Section struct label */}
@@ -343,11 +360,6 @@ export default function About() {
                                 {current.data.map((node, i) => (
                                     <LinkedListNode key={node.id} node={node} index={i} total={current.data.length} />
                                 ))}
-                                {/* Footer */}
-                                <div className="mt-6 font-mono text-[15px] text-white/15 border-t border-white/8 pt-4">
-                                    <div>// Traversal complete — reached TAIL → NULL</div>
-                                    <div>// Total nodes: {current.data.length} | Time: O(n) | Space: O(n)</div>
-                                </div>
                             </div>
                         )}
                     </motion.div>

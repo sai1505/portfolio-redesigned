@@ -19,8 +19,6 @@ const ENTRIES = [
     { key: 'EMAIL', value: 'vsai1505.bona@gmail.com', hint: 'Send me an email', action: 'mailto:vsai1505.bona@gmail.com' },
     { key: 'GITHUB', value: 'github.com/sai1505', hint: 'Code & contributions', action: 'https://github.com/sai1505' },
     { key: 'LINKEDIN', value: 'linkedin.com/in/bonamukkala-saivenkata-reddy', hint: 'Professional network', action: 'https://linkedin.com/in/bonamukkala-saivenkata-reddy' },
-    { key: 'PHONE', value: '+91 8885278416', hint: 'Call or WhatsApp', action: 'tel:+918885278416' },
-    { key: 'RESUME', value: 'BSVR_Resume_2025.pdf', hint: 'Download CV — PDF', action: '#' },
 ]
 
 // assign each entry a slot via hash
@@ -91,15 +89,15 @@ function BucketRow({ entry, slotIdx, rowIdx, totalInSlot }) {
                     display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 5,
                 }}>
                     <div style={{
-                        fontFamily: 'JetBrains Mono,monospace', fontSize: 14, fontWeight: 800,
+                        fontFamily: 'Inter', fontSize: 14, fontWeight: 800,
                         letterSpacing: 2,
                         color: isRevealed ? '#000' : '#fff', transition: 'color .18s',
                     }}>{entry.key}</div>
-                    <div style={{ fontFamily: 'JetBrains Mono,monospace', fontSize: 9, color: isRevealed ? 'rgba(0,0,0,0.38)' : 'rgba(255,255,255,0.25)' }}>
+                    <div style={{ fontFamily: 'Inter', fontSize: 9, color: isRevealed ? 'rgba(0,0,0,0.38)' : 'rgba(255,255,255,0.25)' }}>
                         {isHashing ? steps[steps.length - 1] : `0x${entry.hash.toString(16).toUpperCase().padStart(8, '0')}`}
                     </div>
                     {isChained && (
-                        <div style={{ fontFamily: 'JetBrains Mono,monospace', fontSize: 8, color: isRevealed ? 'rgba(0,0,0,0.3)' : 'rgba(255,255,255,0.25)' }}>
+                        <div style={{ fontFamily: 'Inter', fontSize: 8, color: isRevealed ? 'rgba(0,0,0,0.3)' : 'rgba(255,255,255,0.25)' }}>
                             ⛓ chained [{rowIdx + 1}/{totalInSlot}]
                         </div>
                     )}
@@ -111,18 +109,18 @@ function BucketRow({ entry, slotIdx, rowIdx, totalInSlot }) {
                     display: 'flex', alignItems: 'center', gap: 10,
                     borderRight: '1px solid rgba(255,255,255,0.1)',
                 }}>
-                    <span style={{ fontFamily: 'JetBrains Mono,monospace', fontSize: 11, color: isRevealed ? 'rgba(0,0,0,0.35)' : 'rgba(255,255,255,0.25)' }}>→</span>
+                    <span style={{ fontFamily: 'Inter', fontSize: 11, color: isRevealed ? 'rgba(0,0,0,0.35)' : 'rgba(255,255,255,0.25)' }}>→</span>
                     {isRevealed ? (
                         <motion.span
                             initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-                            style={{ fontFamily: 'JetBrains Mono,monospace', fontSize: 13, fontWeight: 600, color: '#000', wordBreak: 'break-all' }}
+                            style={{ fontFamily: 'Inter', fontSize: 13, fontWeight: 600, color: '#000', wordBreak: 'break-all' }}
                         >{entry.value}</motion.span>
                     ) : isHashing ? (
-                        <span style={{ fontFamily: 'JetBrains Mono,monospace', fontSize: 11, color: 'rgba(255,255,255,0.5)' }}>
+                        <span style={{ fontFamily: 'Inter', fontSize: 11, color: 'rgba(255,255,255,0.5)' }}>
                             {steps[steps.length - 1] || 'computing…'}
                         </span>
                     ) : (
-                        <span style={{ fontFamily: 'JetBrains Mono,monospace', fontSize: 13, color: 'rgba(255,255,255,0.15)', letterSpacing: 3 }}>
+                        <span style={{ fontFamily: 'Inter', fontSize: 13, color: 'rgba(255,255,255,0.15)', letterSpacing: 3 }}>
                             {'•'.repeat(Math.min(entry.value.length, 24))}
                         </span>
                     )}
@@ -134,13 +132,13 @@ function BucketRow({ entry, slotIdx, rowIdx, totalInSlot }) {
                     display: 'flex', flexDirection: 'column', alignItems: 'flex-end', justifyContent: 'center', gap: 6,
                 }}>
                     <span style={{
-                        fontFamily: 'JetBrains Mono,monospace', fontSize: 9, fontWeight: 700,
+                        fontFamily: 'Inter', fontSize: 9, fontWeight: 700,
                         color: isRevealed ? 'rgba(0,0,0,0.45)' : isHashing ? 'rgba(255,255,255,0.6)' : 'rgba(255,255,255,0.25)',
                     }}>
                         {isRevealed ? '✓ FOUND' : isHashing ? 'HASHING…' : 'get(key)'}
                     </span>
                     <span style={{
-                        fontFamily: 'JetBrains Mono,monospace', fontSize: 8,
+                        fontFamily: 'Inter', fontSize: 8,
                         color: isRevealed ? 'rgba(0,0,0,0.28)' : 'rgba(255,255,255,0.18)',
                         border: `1px solid ${isRevealed ? 'rgba(0,0,0,0.15)' : 'rgba(255,255,255,0.12)'}`,
                         padding: '2px 6px',
@@ -161,12 +159,12 @@ function BucketRow({ entry, slotIdx, rowIdx, totalInSlot }) {
                         style={{ overflow: 'hidden', background: '#fff', borderTop: '1px solid rgba(0,0,0,0.08)' }}
                     >
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 22px' }}>
-                            <span style={{ fontFamily: 'JetBrains Mono,monospace', fontSize: 10, color: 'rgba(0,0,0,0.4)' }}>{entry.hint}</span>
+                            <span style={{ fontFamily: 'Inter', fontSize: 10, color: 'rgba(0,0,0,0.4)' }}>{entry.hint}</span>
                             <a
                                 href={entry.action} target="_blank" rel="noopener noreferrer"
                                 onClick={e => e.stopPropagation()}
                                 style={{
-                                    fontFamily: 'JetBrains Mono,monospace', fontSize: 11, fontWeight: 700,
+                                    fontFamily: 'Inter', fontSize: 11, fontWeight: 700,
                                     color: '#000', border: '1.5px solid rgba(0,0,0,0.35)',
                                     padding: '6px 18px', textDecoration: 'none', transition: 'background .15s',
                                 }}
@@ -203,7 +201,7 @@ function SlotRow({ slot, entries, delay }) {
                 padding: '14px 0',
             }}>
                 <span style={{
-                    fontFamily: 'JetBrains Mono,monospace',
+                    fontFamily: 'Inter',
                     fontSize: 11, fontWeight: 700,
                     color: isEmpty ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.55)',
                     writingMode: 'vertical-rl', letterSpacing: 1,
@@ -220,10 +218,10 @@ function SlotRow({ slot, entries, delay }) {
                         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
                         padding: '18px 22px',
                     }}>
-                        <span style={{ fontFamily: 'JetBrains Mono,monospace', fontSize: 11, color: 'rgba(255,255,255,0.1)', fontStyle: 'italic' }}>
+                        <span style={{ fontFamily: 'Inter', fontSize: 11, color: 'rgba(255,255,255,0.1)', fontStyle: 'italic' }}>
                             — empty —
                         </span>
-                        <span style={{ fontFamily: 'JetBrains Mono,monospace', fontSize: 10, color: 'rgba(255,255,255,0.07)' }}>
+                        <span style={{ fontFamily: 'Inter', fontSize: 10, color: 'rgba(255,255,255,0.07)' }}>
                             NULL
                         </span>
                     </div>
@@ -249,9 +247,32 @@ function ContactForm() {
     const [state, handleSubmit] = useForm(key)
     const [focused, setFocused] = useState(null)
     const [hov, setHov] = useState(false)
+    const [showSuccess, setShowSuccess] = useState(false)
+    const [countdown, setCountdown] = useState(3)
+    const formRef = useRef(null)
+
+    // When Formspree reports success, trigger our own success state
+    useEffect(() => {
+        if (state.succeeded) {
+            setShowSuccess(true)
+            setCountdown(3)
+        }
+    }, [state.succeeded])
+
+    // Countdown timer — hides success and resets after 3 seconds
+    useEffect(() => {
+        if (!showSuccess) return
+        if (countdown === 0) {
+            setShowSuccess(false)
+            // Reset the form fields manually
+            if (formRef.current) formRef.current.reset()
+            return
+        }
+        const t = setTimeout(() => setCountdown(c => c - 1), 1000)
+        return () => clearTimeout(t)
+    }, [showSuccess, countdown])
 
     const isSending = state.submitting
-    const isSent = state.succeeded
     const isError = state.errors && Object.keys(state.errors).length > 0
 
     const inputStyle = (key) => ({
@@ -261,7 +282,7 @@ function ContactForm() {
         borderBottom: `1px solid ${focused === key ? '#fff' : 'rgba(255,255,255,0.22)'}`,
         outline: 'none',
         padding: '10px 0',
-        fontFamily: 'JetBrains Mono,monospace',
+        fontFamily: 'Inter',
         fontSize: 13,
         color: '#fff',
         caretColor: '#fff',
@@ -270,43 +291,13 @@ function ContactForm() {
     })
 
     const labelStyle = (key, val) => ({
-        fontFamily: 'JetBrains Mono,monospace',
+        fontFamily: 'Inter',
         fontSize: 9, letterSpacing: 2,
         color: focused === key || val ? 'rgba(255,255,255,0.65)' : 'rgba(255,255,255,0.3)',
         transition: 'color .18s',
         display: 'block',
         marginBottom: 5,
     })
-
-    // Success state
-    if (isSent) {
-        return (
-            <motion.div
-                initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                className="max-w-screen-xl mx-auto mt-16"
-            >
-                <div className="flex items-center gap-4 mb-8">
-                    <div className="font-mono text-xs text-white/35 tracking-widest">SEND_MESSAGE</div>
-                    <div className="flex-1 h-px bg-white/10" />
-                </div>
-                <div style={{
-                    border: '1.5px solid #fff', background: '#fff',
-                    padding: '48px 40px', textAlign: 'center', maxWidth: 560,
-                }}>
-                    <div style={{ fontFamily: 'JetBrains Mono,monospace', fontSize: 28, fontWeight: 900, color: '#000', marginBottom: 12 }}>
-                        ✓ MESSAGE SENT
-                    </div>
-                    <div style={{ fontFamily: 'JetBrains Mono,monospace', fontSize: 11, color: 'rgba(0,0,0,0.5)', marginBottom: 6 }}>
-            // push(message) → vsai1505.bona@gmail.com
-                    </div>
-                    <div style={{ fontFamily: 'JetBrains Mono,monospace', fontSize: 11, color: 'rgba(0,0,0,0.45)' }}>
-                        I'll reply within 24h · avg response_time: &lt;24h
-                    </div>
-                </div>
-            </motion.div>
-        )
-    }
 
     return (
         <motion.div
@@ -324,97 +315,147 @@ function ContactForm() {
 
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 32, alignItems: 'start' }}>
 
-                {/* Left: form */}
-                <div style={{ border: '1px solid rgba(255,255,255,0.15)', padding: '32px 36px' }}>
-                    <div style={{ marginBottom: 28 }}>
-                        <div style={{ fontFamily: 'JetBrains Mono,monospace', fontSize: 16, fontWeight: 800, color: '#fff', letterSpacing: 1, marginBottom: 6 }}>
-                            Send Me a Message
-                        </div>
-                        <div style={{ fontFamily: 'JetBrains Mono,monospace', fontSize: 10, color: 'rgba(255,255,255,0.28)' }}>
-              // All fields required · powered by Formspree
-                        </div>
-                    </div>
+                {/* Left: form or success */}
+                <div style={{ border: '1px solid rgba(255,255,255,0.15)', padding: '32px 36px', position: 'relative', overflow: 'hidden' }}>
 
-                    {/* Formspree form — uses native onSubmit */}
-                    <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
+                    <AnimatePresence mode="wait">
+                        {showSuccess ? (
+                            /* ── Success state ── */
+                            <motion.div
+                                key="success"
+                                initial={{ opacity: 0, y: 16 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -16 }}
+                                transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                                style={{ textAlign: 'center', padding: '24px 0' }}
+                            >
+                                <div style={{
+                                    fontFamily: 'Inter', fontSize: 28, fontWeight: 900,
+                                    color: '#fff', marginBottom: 12,
+                                }}>
+                                    ✓ MESSAGE SENT
+                                </div>
+                                <div style={{ fontFamily: 'Inter', fontSize: 11, color: 'rgba(255,255,255,0.4)', marginBottom: 6 }}>
+                                    // push(message) → vsai1505.bona@gmail.com
+                                </div>
+                                <div style={{ fontFamily: 'Inter', fontSize: 11, color: 'rgba(255,255,255,0.35)', marginBottom: 24 }}>
+                                    I'll reply within 24h · avg response_time: &lt;24h
+                                </div>
+                                {/* Countdown bar */}
+                                <div style={{ marginTop: 8 }}>
+                                    <div style={{ fontFamily: 'Inter', fontSize: 9, color: 'rgba(255,255,255,0.25)', marginBottom: 8, letterSpacing: 1 }}>
+                                        FORM RESETS IN {countdown}s
+                                    </div>
+                                    <div style={{ height: 2, background: 'rgba(255,255,255,0.1)', position: 'relative' }}>
+                                        <motion.div
+                                            style={{ height: '100%', background: 'rgba(255,255,255,0.5)', transformOrigin: 'left' }}
+                                            initial={{ scaleX: 1 }}
+                                            animate={{ scaleX: 0 }}
+                                            transition={{ duration: 3, ease: 'linear' }}
+                                        />
+                                    </div>
+                                </div>
+                            </motion.div>
+                        ) : (
+                            /* ── Form ── */
+                            <motion.div
+                                key="form"
+                                initial={{ opacity: 0, y: 16 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -16 }}
+                                transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                            >
+                                <div style={{ marginBottom: 28 }}>
+                                    <div style={{ fontFamily: 'Inter', fontSize: 16, fontWeight: 800, color: '#fff', letterSpacing: 1, marginBottom: 6 }}>
+                                        Send Me a Message
+                                    </div>
+                                    <div style={{ fontFamily: 'Inter', fontSize: 10, color: 'rgba(255,255,255,0.28)' }}>
+                                        // All fields required · powered by Formspree
+                                    </div>
+                                </div>
 
-                        {/* Name */}
-                        <div style={{ marginBottom: 24 }}>
-                            <label htmlFor="name" style={labelStyle('name', false)}>YOUR_NAME *</label>
-                            <input
-                                id="name" type="text" name="name" required
-                                placeholder="e.g. John Doe"
-                                onFocus={() => setFocused('name')}
-                                onBlur={() => setFocused(null)}
-                                style={inputStyle('name')}
-                            />
-                            <ValidationError prefix="Name" field="name" errors={state.errors}
-                                style={{ fontFamily: 'JetBrains Mono,monospace', fontSize: 9, color: 'rgba(255,100,100,0.8)', marginTop: 4 }}
-                            />
-                        </div>
+                                <form ref={formRef} onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
 
-                        {/* Email */}
-                        <div style={{ marginBottom: 24 }}>
-                            <label htmlFor="email" style={labelStyle('email', false)}>YOUR_EMAIL *</label>
-                            <input
-                                id="email" type="email" name="email" required
-                                placeholder="you@example.com"
-                                onFocus={() => setFocused('email')}
-                                onBlur={() => setFocused(null)}
-                                style={inputStyle('email')}
-                            />
-                            <ValidationError prefix="Email" field="email" errors={state.errors}
-                                style={{ fontFamily: 'JetBrains Mono,monospace', fontSize: 9, color: 'rgba(255,100,100,0.8)', marginTop: 4 }}
-                            />
-                        </div>
+                                    {/* Name */}
+                                    <div style={{ marginBottom: 24 }}>
+                                        <label htmlFor="name" style={labelStyle('name', false)}>YOUR_NAME *</label>
+                                        <input
+                                            id="name" type="text" name="name" required
+                                            placeholder="e.g. John Doe"
+                                            onFocus={() => setFocused('name')}
+                                            onBlur={() => setFocused(null)}
+                                            style={inputStyle('name')}
+                                        />
+                                        <ValidationError prefix="Name" field="name" errors={state.errors}
+                                            style={{ fontFamily: 'Inter', fontSize: 9, color: 'rgba(255,100,100,0.8)', marginTop: 4 }}
+                                        />
+                                    </div>
 
-                        {/* Message */}
-                        <div style={{ marginBottom: 32 }}>
-                            <label htmlFor="message" style={labelStyle('message', false)}>YOUR_MESSAGE *</label>
-                            <textarea
-                                id="message" name="message" required rows={5}
-                                placeholder="What's on your mind..."
-                                onFocus={() => setFocused('message')}
-                                onBlur={() => setFocused(null)}
-                                style={{ ...inputStyle('message'), display: 'block', lineHeight: 1.7 }}
-                            />
-                            <ValidationError prefix="Message" field="message" errors={state.errors}
-                                style={{ fontFamily: 'JetBrains Mono,monospace', fontSize: 9, color: 'rgba(255,100,100,0.8)', marginTop: 4 }}
-                            />
-                        </div>
+                                    {/* Email */}
+                                    <div style={{ marginBottom: 24 }}>
+                                        <label htmlFor="email" style={labelStyle('email', false)}>YOUR_EMAIL *</label>
+                                        <input
+                                            id="email" type="email" name="email" required
+                                            placeholder="you@example.com"
+                                            onFocus={() => setFocused('email')}
+                                            onBlur={() => setFocused(null)}
+                                            style={inputStyle('email')}
+                                        />
+                                        <ValidationError prefix="Email" field="email" errors={state.errors}
+                                            style={{ fontFamily: 'Inter', fontSize: 9, color: 'rgba(255,100,100,0.8)', marginTop: 4 }}
+                                        />
+                                    </div>
 
-                        {/* Submit */}
-                        <motion.button
-                            type="submit"
-                            disabled={isSending}
-                            onMouseEnter={() => setHov(true)}
-                            onMouseLeave={() => setHov(false)}
-                            animate={{ scale: hov && !isSending ? 1.02 : 1 }}
-                            transition={{ type: 'spring', stiffness: 400, damping: 20 }}
-                            style={{
-                                width: '100%', padding: '14px',
-                                fontFamily: 'JetBrains Mono,monospace',
-                                fontSize: 12, fontWeight: 800, letterSpacing: 2,
-                                border: '1.5px solid',
-                                cursor: isSending ? 'wait' : 'pointer',
-                                transition: 'background .2s, color .2s, border-color .2s',
-                                ...(isSending
-                                    ? { background: 'transparent', color: 'rgba(255,255,255,0.38)', borderColor: 'rgba(255,255,255,0.18)' }
-                                    : hov
-                                        ? { background: '#fff', color: '#000', borderColor: '#fff' }
-                                        : { background: 'transparent', color: '#fff', borderColor: 'rgba(255,255,255,0.5)' }
-                                ),
-                            }}
-                        >
-                            {isSending ? 'SENDING…' : 'send(message) →'}
-                        </motion.button>
+                                    {/* Message */}
+                                    <div style={{ marginBottom: 32 }}>
+                                        <label htmlFor="message" style={labelStyle('message', false)}>YOUR_MESSAGE *</label>
+                                        <textarea
+                                            id="message" name="message" required rows={5}
+                                            placeholder="What's on your mind..."
+                                            onFocus={() => setFocused('message')}
+                                            onBlur={() => setFocused(null)}
+                                            style={{ ...inputStyle('message'), display: 'block', lineHeight: 1.7 }}
+                                        />
+                                        <ValidationError prefix="Message" field="message" errors={state.errors}
+                                            style={{ fontFamily: 'Inter', fontSize: 9, color: 'rgba(255,100,100,0.8)', marginTop: 4 }}
+                                        />
+                                    </div>
 
-                        {isError && (
-                            <div style={{ fontFamily: 'JetBrains Mono,monospace', fontSize: 10, color: 'rgba(255,100,100,0.7)', marginTop: 10, textAlign: 'center' }}>
-                                ✗ Something went wrong — please try again
-                            </div>
+                                    {/* Submit */}
+                                    <motion.button
+                                        type="submit"
+                                        disabled={isSending}
+                                        onMouseEnter={() => setHov(true)}
+                                        onMouseLeave={() => setHov(false)}
+                                        animate={{ scale: hov && !isSending ? 1.02 : 1 }}
+                                        transition={{ type: 'spring', stiffness: 400, damping: 20 }}
+                                        style={{
+                                            width: '100%', padding: '14px',
+                                            fontFamily: 'Inter',
+                                            fontSize: 12, fontWeight: 800, letterSpacing: 2,
+                                            border: '1.5px solid',
+                                            cursor: isSending ? 'wait' : 'pointer',
+                                            transition: 'background .2s, color .2s, border-color .2s',
+                                            ...(isSending
+                                                ? { background: 'transparent', color: 'rgba(255,255,255,0.38)', borderColor: 'rgba(255,255,255,0.18)' }
+                                                : hov
+                                                    ? { background: '#fff', color: '#000', borderColor: '#fff' }
+                                                    : { background: 'transparent', color: '#fff', borderColor: 'rgba(255,255,255,0.5)' }
+                                            ),
+                                        }}
+                                    >
+                                        {isSending ? 'SENDING…' : 'Send (Message) →'}
+                                    </motion.button>
+
+                                    {isError && (
+                                        <div style={{ fontFamily: 'Inter', fontSize: 10, color: 'rgba(255,100,100,0.7)', marginTop: 10, textAlign: 'center' }}>
+                                            ✗ Something went wrong — please try again
+                                        </div>
+                                    )}
+                                </form>
+                            </motion.div>
                         )}
-                    </form>
+                    </AnimatePresence>
                 </div>
             </div>
         </motion.div>
@@ -448,7 +489,7 @@ export default function Contact() {
                     <motion.div
                         initial={{ opacity: 0, x: -16 }} animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: 0.1 }}
-                        style={{ width: 230, flexShrink: 0, border: '1px solid rgba(255,255,255,0.15)', fontFamily: 'JetBrains Mono,monospace' }}
+                        style={{ width: 230, flexShrink: 0, border: '1px solid rgba(255,255,255,0.15)', fontFamily: 'Inter' }}
                     >
                         <div style={{ padding: '10px 18px', borderBottom: '1px solid rgba(255,255,255,0.1)', background: 'rgba(255,255,255,0.04)' }}>
                             <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.5)', fontWeight: 700, letterSpacing: 1 }}>TABLE METADATA</div>
@@ -514,10 +555,10 @@ export default function Contact() {
 
                         <div style={{ borderTop: '1px solid rgba(255,255,255,0.07)', padding: '10px 18px' }}>
                             <div style={{ fontSize: 9, color: 'rgba(255,255,255,0.2)', lineHeight: 1.8 }}>
-                // click any bucket<br />
-                // to run get(key)<br />
-                // value is masked<br />
-                // until hash resolves
+                                // click any bucket<br />
+                                // to run get(key)<br />
+                                // value is masked<br />
+                                // until hash resolves
                             </div>
                         </div>
                     </motion.div>
@@ -533,7 +574,7 @@ export default function Contact() {
                                 background: 'rgba(255,255,255,0.05)',
                                 border: '1px solid rgba(255,255,255,0.2)',
                                 borderBottom: 'none',
-                                fontFamily: 'JetBrains Mono,monospace',
+                                fontFamily: 'Inter',
                             }}
                         >
                             {['SLOT', 'KEY  →  HASH', 'VALUE', 'STATUS'].map((h, i) => (
@@ -563,7 +604,7 @@ export default function Contact() {
                             padding: '8px 22px',
                             display: 'flex', justifyContent: 'space-between', alignItems: 'center',
                             background: 'rgba(255,255,255,0.02)',
-                            fontFamily: 'JetBrains Mono,monospace', fontSize: 9, color: 'rgba(255,255,255,0.22)',
+                            fontFamily: 'Inter', fontSize: 9, color: 'rgba(255,255,255,0.22)',
                         }}>
                             <span>get(key): O(1) avg · O(n) worst</span>
                             <span>size={FILLED.length} / capacity={CAPACITY}</span>
@@ -574,15 +615,6 @@ export default function Contact() {
 
                 {/* ── Send Message Form ── */}
                 <ContactForm />
-
-                {/* Page footer */}
-                <motion.div
-                    initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1 }}
-                    className="max-w-screen-xl mx-auto font-mono text-xs text-white/20 border-t border-white/10 pt-6 mt-12"
-                >
-                    <div>// hash_fn: djb2 — h = ((h &lt;&lt; 5) + h) ^ charCode</div>
-                    <div>// collision strategy: separate chaining | probing: none</div>
-                </motion.div>
             </div>
         </PageWrapper>
     )

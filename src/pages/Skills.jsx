@@ -4,44 +4,57 @@ import PageWrapper from '../UI/PageWrapper'
 
 const BRANCHES = [
     {
-        id: 'languages', label: 'Languages',
+        id: 'languages',
+        label: 'Languages',
         children: [
-            { id: 'java', label: 'Java', level: 88 },
-            { id: 'python', label: 'Python', level: 82 },
+            { id: 'java', label: 'Java', level: 80 },
+            { id: 'python', label: 'Python', level: 80 },
             { id: 'c', label: 'C', level: 75 },
-            { id: 'cpp', label: 'C++', level: 70 },
-            { id: 'dart', label: 'Dart', level: 65 },
+            { id: 'cpp', label: 'C++', level: 75 },
+            { id: 'dart', label: 'Dart', level: 75 },
         ],
     },
     {
-        id: 'web', label: 'Web & Mobile',
+        id: 'web_mobile',
+        label: 'Web & Mobile',
         children: [
-            { id: 'react', label: 'React', level: 85 },
-            { id: 'nodejs', label: 'Node.js', level: 80 },
-            { id: 'flutter', label: 'Flutter', level: 72 },
-            { id: 'html', label: 'HTML/CSS', level: 88 },
-            { id: 'js', label: 'JavaScript', level: 82 },
+            { id: 'react', label: 'React', level: 70 },
+            { id: 'nodejs', label: 'Node.js', level: 50 },
+            { id: 'flutter', label: 'Flutter', level: 75 },
+            { id: 'android', label: 'Android (Java)', level: 80 },
+            { id: 'html_css', label: 'HTML/CSS', level: 80 },
+            { id: 'javascript', label: 'JavaScript', level: 80 },
         ],
     },
     {
-        id: 'backend', label: 'Backend & AI',
+        id: 'backend_ai',
+        label: 'Backend & AI',
         children: [
-            { id: 'fastapi', label: 'FastAPI', level: 80 },
-            { id: 'langchain', label: 'LangChain', level: 68 },
-            { id: 'groq', label: 'GROQ LLMs', level: 75 },
-            { id: 'android', label: 'Android', level: 70 },
+            { id: 'fastapi', label: 'FastAPI', level: 85 },
+            { id: 'langchain', label: 'LangChain', level: 50 },
+            { id: 'groq', label: 'Groq LLMs', level: 95 },
         ],
     },
     {
-        id: 'tools', label: 'Databases & Tools',
+        id: 'database_cloud',
+        label: 'Databases & Cloud',
         children: [
-            { id: 'mysql', label: 'MySQL', level: 78 },
-            { id: 'postgres', label: 'PostgreSQL', level: 75 },
-            { id: 'git', label: 'Git', level: 88 },
-            { id: 'docker', label: 'Docker', level: 72 },
+            { id: 'mysql', label: 'MySQL', level: 85 },
+            { id: 'postgresql', label: 'PostgreSQL', level: 80 },
+            { id: 'cloudsql', label: 'Cloud SQL', level: 75 },
+        ],
+    },
+    {
+        id: 'tools',
+        label: 'Tools',
+        children: [
+            { id: 'git', label: 'Git', level: 95 },
+            { id: 'github', label: 'GitHub', level: 95 },
+            { id: 'docker', label: 'Docker', level: 80 },
             { id: 'postman', label: 'Postman', level: 80 },
+            { id: 'androidstudio', label: 'Android Studio', level: 80 },
         ],
-    },
+    }
 ]
 
 /* ── LeafCard ───────────────────────────────────────────────────────────── */
@@ -417,15 +430,6 @@ export default function Skills() {
                         )}
                     </AnimatePresence>
                 </div>
-
-                {/* Footer */}
-                <motion.div
-                    initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.9 }}
-                    className="max-w-screen-2xl mx-auto font-mono text-xs text-white/20 border-t border-white/10 pt-5 mt-20"
-                >
-                    <div>// In-order traversal: left → root → right</div>
-                    <div>// Total leaves: {BRANCHES.reduce((s, b) => s + b.children.length, 0)} · branches: {BRANCHES.length} · depth: 2</div>
-                </motion.div>
             </div>
         </PageWrapper>
     )

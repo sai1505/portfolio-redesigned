@@ -41,7 +41,6 @@ const BRANCHES = [
         children: [
             { id: 'mysql', label: 'MySQL', level: 85 },
             { id: 'postgresql', label: 'PostgreSQL', level: 80 },
-            { id: 'cloudsql', label: 'Cloud SQL', level: 75 },
         ],
     },
     {

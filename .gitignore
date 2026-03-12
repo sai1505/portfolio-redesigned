@@ -24,3 +24,5 @@ dist-ssr
 *.sw?
 
 prompt.txt
+
+.env

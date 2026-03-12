@@ -4,222 +4,320 @@ import PageWrapper from '../UI/PageWrapper'
 
 const PROJECTS = [
     {
-        id: 'p005',
-        index: 4,
-        title: 'NeuralCanvas',
-        subtitle: 'AI-powered design tool',
-        year: '2024',
-        stack: ['Next.js', 'OpenAI API', 'Fabric.js', 'PostgreSQL'],
-        desc: 'Collaborative canvas where AI generates, edits, and suggests design elements in real time. Used by 500+ designers in beta.',
+        id: 'p003',
+        title: 'XCropAI',
+        subtitle: 'AI Crop Disease Detection Platform',
+        year: 'Oct–Dec 2025',
+        stack: ['React', 'Supabase', 'PostgreSQL', 'GROQ Models', 'FastAPI'],
+        desc: 'AI-driven crop disease detection and advisory platform using multimodal LLMs. Built scalable FastAPI services that cut manual analysis time by 60%.',
         status: 'PRODUCTION',
-        links: { github: '#', live: '#' },
+        links: { github: 'https://github.com/sai1505', live: null },
         complexity: 'O(n log n)',
     },
     {
-        id: 'p004',
-        index: 3,
-        title: 'DevFlow',
-        subtitle: 'Developer task orchestration',
-        year: '2023',
-        stack: ['React', 'Node.js', 'Redis', 'WebSockets'],
-        desc: 'Real-time task management system for distributed engineering teams. Features live collaboration, dependency tracking, and automated sprint generation.',
-        status: 'PRODUCTION',
-        links: { github: '#', live: '#' },
-        complexity: 'O(n)',
-    },
-    {
-        id: 'p003',
-        index: 2,
-        title: 'LogLens',
-        subtitle: 'Structured log analysis dashboard',
-        year: '2023',
-        stack: ['React', 'D3.js', 'Python', 'ClickHouse'],
-        desc: 'Visual log analysis tool that parses, clusters, and surfaces anomalies from high-volume application logs. Processes 1M+ events/sec.',
-        status: 'ARCHIVED',
-        links: { github: '#', live: null },
-        complexity: 'O(n²)',
-    },
-    {
         id: 'p002',
-        index: 1,
-        title: 'SyncDB',
-        subtitle: 'Database sync engine',
-        year: '2022',
-        stack: ['TypeScript', 'PostgreSQL', 'MongoDB', 'Docker'],
-        desc: 'Bidirectional database sync engine with conflict resolution for hybrid Postgres/Mongo setups. Battle-tested in 3 production environments.',
-        status: 'OPEN SOURCE',
-        links: { github: '#', live: null },
+        title: 'Tax Suthradhar',
+        subtitle: 'AI Tax Alert & Compliance System',
+        year: 'Jul–Oct 2025',
+        stack: ['React.js', 'Node.js', 'Express.js', 'LangChain', 'GROQ', 'Cloudflare-R2', 'FastAPI'],
+        desc: 'Tracks 100+ tax policies and automates compliance 70% faster with 100% legal accuracy. Uses Docling for document parsing and multi-agent orchestration.',
+        status: 'PRODUCTION',
+        links: { github: 'https://github.com/sai1505', live: null },
         complexity: 'O(n)',
     },
     {
         id: 'p001',
-        index: 0,
-        title: 'PortalAuth',
-        subtitle: 'Auth-as-a-service module',
-        year: '2021',
-        stack: ['Node.js', 'JWT', 'Redis', 'Express'],
-        desc: 'Plug-and-play authentication service with OAuth, 2FA, and session management. First open-source project — 200+ GitHub stars.',
-        status: 'DEPRECATED',
-        links: { github: '#', live: null },
+        title: 'Sky Stream',
+        subtitle: 'Android Video Streaming App',
+        year: 'Feb–Mar 2025',
+        stack: ['Java', 'Android Studio', 'Google Drive API'],
+        desc: 'Android app to stream videos directly from Google Drive links. Implemented secure access and seamless UX — reduced buffering by 15%.',
+        status: 'COMPLETE',
+        links: { github: 'https://github.com/sai1505', live: null },
         complexity: 'O(1)',
     },
 ]
 
-const STATUS_STYLES = {
-    PRODUCTION: 'text-white border-white/40',
-    ARCHIVED: 'text-white/40 border-white/20',
-    'OPEN SOURCE': 'text-white/70 border-white/30',
-    DEPRECATED: 'text-white/20 border-white/10',
+const STATUS_COLORS = {
+    PRODUCTION: { border: 'rgba(255,255,255,0.55)', color: '#fff' },
+    COMPLETE: { border: 'rgba(255,255,255,0.35)', color: 'rgba(255,255,255,0.7)' },
+    ARCHIVED: { border: 'rgba(255,255,255,0.2)', color: 'rgba(255,255,255,0.4)' },
+    DEPRECATED: { border: 'rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.2)' },
 }
+
+// How many items deep is this from the top (index 0 = top of stack)
+const STACK_SIZE = PROJECTS.length
 
 export default function Projects() {
     const [expandedId, setExpandedId] = useState(null)
-    const [popping, setPopping] = useState(false)
+    const [pushing, setPushing] = useState(false)  // animate push
+    const [popping, setPopping] = useState(null)   // id being popped
 
-    const handleToggle = (id) => {
+    const toggle = (id) => {
         if (expandedId === id) {
-            setPopping(true)
+            // POP animation: slide up then close
+            setPopping(id)
             setTimeout(() => {
                 setExpandedId(null)
-                setPopping(false)
-            }, 200)
+                setPopping(null)
+            }, 320)
         } else {
+            // PUSH animation: briefly show push indicator
+            setPushing(true)
+            setTimeout(() => setPushing(false), 400)
             setExpandedId(id)
         }
     }
 
     return (
         <PageWrapper>
-            <div className="max-w-3xl mx-auto px-6 py-16">
-                {/* Header */}
+            <div className="max-w-4xl mx-auto px-8 py-16">
+
+                {/* ── Header ── */}
                 <motion.div
-                    initial={{ opacity: 0, y: -10 }}
+                    initial={{ opacity: 0, y: -12 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="mb-10"
+                    className="mb-12"
                 >
                     <div className="font-mono text-xs text-white/30 mb-3 tracking-widest">STRUCTURE: STACK (LIFO)</div>
-                    <h1 className="font-mono text-3xl font-black text-white tracking-tight mb-2">Projects</h1>
-                    <p className="font-mono text-xs text-white/30">{'// Most recent at TOP — click to inspect stack frame'}</p>
-                    <div className="mt-3 font-mono text-xs text-white/20">
-                        Stack&lt;Project&gt; work = new Stack(); {'// size: ' + PROJECTS.length}
+                    <h1 className="font-mono text-4xl font-black text-white tracking-tight mb-3">Projects</h1>
+                    <p className="font-mono text-xs text-white/30">// Most recent on TOP — click frame to PUSH/POP inspect</p>
+                    <div className="mt-4 font-mono text-xs text-white/18">
+                        Stack&lt;Project&gt; work = new Stack(); <span className="text-white/25">// size: {STACK_SIZE}</span>
                     </div>
                 </motion.div>
 
-                {/* Stack pointer */}
+                {/* ── Stack pointer + operation indicator ── */}
                 <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    transition={{ delay: 0.2 }}
-                    className="flex items-center gap-3 mb-2 px-1"
+                    transition={{ delay: 0.15 }}
+                    className="flex items-center justify-between mb-3 px-1"
                 >
-                    <span className="font-mono text-xs text-white/50">SP →</span>
-                    <span className="font-mono text-xs text-white/25">stack.peek() = "{PROJECTS[0].title}"</span>
+                    <div className="flex items-center gap-4 font-mono text-xs">
+                        <span className="text-white/55">SP →</span>
+                        <span className="text-white/30">stack.peek() = <span className="text-white/55">"{PROJECTS[0].title}"</span></span>
+                    </div>
+
+                    {/* Operation flash */}
+                    <AnimatePresence>
+                        {pushing && (
+                            <motion.span
+                                initial={{ opacity: 0, x: 10 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                exit={{ opacity: 0, x: 10 }}
+                                className="font-mono text-xs text-white/60 border border-white/20 px-2 py-0.5"
+                            >
+                                PUSH ↓
+                            </motion.span>
+                        )}
+                        {popping && (
+                            <motion.span
+                                initial={{ opacity: 0, x: 10 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                exit={{ opacity: 0, x: 10 }}
+                                className="font-mono text-xs text-white/60 border border-white/20 px-2 py-0.5"
+                            >
+                                POP ↑
+                            </motion.span>
+                        )}
+                    </AnimatePresence>
                 </motion.div>
 
-                {/* Stack - TOP first */}
+                {/* ── Stack visual ── */}
                 <div className="relative">
-                    {/* Stack outer border */}
-                    <div className="border-l border-r border-white/15">
+
+                    {/* Left rail — memory address lane */}
+                    <div
+                        className="absolute left-0 top-0 bottom-0 flex flex-col justify-around items-center py-4"
+                        style={{ width: 52, borderRight: '1px solid rgba(255,255,255,0.08)' }}
+                    >
+                        {PROJECTS.map((p, i) => (
+                            <div key={p.id} style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                <span
+                                    className="font-mono text-white/18"
+                                    style={{ fontSize: 9, writingMode: 'vertical-rl', letterSpacing: 1 }}
+                                >
+                                    0x{((STACK_SIZE - i) * 0x400).toString(16).toUpperCase().padStart(4, '0')}
+                                </span>
+                            </div>
+                        ))}
+                    </div>
+
+                    {/* Stack frames */}
+                    <div style={{ marginLeft: 52 }}>
+
+                        {/* TOP label */}
+                        <div className="flex items-center gap-3 mb-0 px-5 py-2 border border-b-0 border-white/20 bg-white/3">
+                            <span className="font-mono text-xs text-white/50 tracking-widest">▲ TOP OF STACK</span>
+                            <div className="flex-1 h-px bg-white/10" />
+                            <span className="font-mono text-xs text-white/25">LIFO</span>
+                        </div>
+
+                        {/* Frames */}
                         {PROJECTS.map((project, i) => {
                             const isExpanded = expandedId === project.id
                             const isTop = i === 0
-                            const depth = PROJECTS.length - 1 - i
+                            const depth = STACK_SIZE - 1 - i  // 0 = bottom
+                            const isPopping = popping === project.id
+                            const sc = STATUS_COLORS[project.status] || STATUS_COLORS.ARCHIVED
 
                             return (
                                 <motion.div
                                     key={project.id}
-                                    initial={{ opacity: 0, y: -20 }}
+                                    initial={{ opacity: 0, y: -24 }}
                                     animate={{ opacity: 1, y: 0 }}
-                                    transition={{ delay: i * 0.08, duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-                                    className="relative"
+                                    transition={{ delay: i * 0.1, duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
                                 >
-                                    {/* Stack frame */}
+                                    {/* frame wrapper — subtle depth tint */}
                                     <div
-                                        className={`border-b border-white/15 ${isTop ? 'border-t border-t-white/30' : ''}`}
                                         style={{
-                                            backgroundColor: `rgba(255,255,255,${0.01 + depth * 0.005})`,
+                                            borderLeft: '1px solid rgba(255,255,255,0.15)',
+                                            borderRight: '1px solid rgba(255,255,255,0.15)',
+                                            borderBottom: '1px solid rgba(255,255,255,0.15)',
+                                            borderTop: isTop ? '1px solid rgba(255,255,255,0.3)' : 'none',
+                                            background: `rgba(255,255,255,${0.012 + depth * 0.008})`,
+                                            position: 'relative',
                                         }}
                                     >
-                                        {/* Frame header */}
-                                        <button
-                                            onClick={() => handleToggle(project.id)}
-                                            className="w-full flex items-center justify-between px-5 py-4 text-left hover:bg-white/5 transition-colors"
-                                            data-hoverable
+                                        {/* depth ruler on right edge */}
+                                        <div
+                                            className="absolute right-0 top-0 bottom-0 flex items-center justify-center"
+                                            style={{ width: 22, borderLeft: '1px solid rgba(255,255,255,0.06)' }}
                                         >
-                                            <div className="flex items-center gap-4">
-                                                {/* Stack index */}
-                                                <div className="w-8 h-8 border border-white/15 flex items-center justify-center shrink-0">
-                                                    <span className="font-mono text-xs text-white/30">{project.index}</span>
+                                            <span
+                                                className="font-mono text-white/15"
+                                                style={{ fontSize: 8, writingMode: 'vertical-rl' }}
+                                            >
+                                                depth:{depth}
+                                            </span>
+                                        </div>
+
+                                        {/* clickable header */}
+                                        <button
+                                            onClick={() => toggle(project.id)}
+                                            className="w-full text-left transition-colors hover:bg-white/4"
+                                            style={{ paddingRight: 30 }}
+                                        >
+                                            <div className="flex items-center gap-5 px-6 py-5">
+
+                                                {/* index badge */}
+                                                <div
+                                                    className="shrink-0 flex items-center justify-center"
+                                                    style={{
+                                                        width: 44, height: 44,
+                                                        border: `1px solid ${isTop ? 'rgba(255,255,255,0.4)' : 'rgba(255,255,255,0.15)'}`,
+                                                    }}
+                                                >
+                                                    <span className="font-mono text-sm font-bold text-white/50">{STACK_SIZE - 1 - i}</span>
                                                 </div>
 
-                                                <div>
-                                                    <div className="flex items-center gap-3">
+                                                {/* title block */}
+                                                <div className="flex-1 min-w-0">
+                                                    <div className="flex items-center gap-3 mb-1 flex-wrap">
                                                         {isTop && (
-                                                            <span className="font-mono text-xs text-white/60 border border-white/30 px-1.5 py-0.5">
+                                                            <span
+                                                                className="font-mono text-xs px-2 py-0.5 shrink-0"
+                                                                style={{ border: '1px solid rgba(255,255,255,0.45)', color: 'rgba(255,255,255,0.8)' }}
+                                                            >
                                                                 TOP
                                                             </span>
                                                         )}
-                                                        <span className="font-mono text-sm font-bold text-white">{project.title}</span>
+                                                        <span className="font-mono text-lg font-black text-white tracking-tight">{project.title}</span>
                                                     </div>
-                                                    <span className="font-mono text-xs text-white/35">{project.subtitle}</span>
+                                                    <span className="font-mono text-xs text-white/38">{project.subtitle}</span>
                                                 </div>
-                                            </div>
 
-                                            <div className="flex items-center gap-4 shrink-0">
-                                                <span className={`font-mono text-xs border px-2 py-0.5 ${STATUS_STYLES[project.status] || 'text-white/30 border-white/15'}`}>
-                                                    {project.status}
-                                                </span>
-                                                <span className="font-mono text-xs text-white/25">{project.year}</span>
-                                                <motion.span
-                                                    animate={{ rotate: isExpanded ? 45 : 0 }}
-                                                    transition={{ duration: 0.2 }}
-                                                    className="font-mono text-white/40 text-lg leading-none"
-                                                >
-                                                    +
-                                                </motion.span>
+                                                {/* meta */}
+                                                <div className="flex items-center gap-4 shrink-0">
+                                                    <span
+                                                        className="font-mono text-xs px-2.5 py-1"
+                                                        style={{ border: `1px solid ${sc.border}`, color: sc.color }}
+                                                    >
+                                                        {project.status}
+                                                    </span>
+                                                    <span className="font-mono text-xs text-white/28">{project.year}</span>
+
+                                                    {/* +/× toggle with push/pop visual */}
+                                                    <motion.div
+                                                        animate={{
+                                                            rotate: isExpanded ? 45 : 0,
+                                                            y: isPopping ? -6 : 0,
+                                                        }}
+                                                        transition={{ duration: 0.22 }}
+                                                        className="font-mono text-2xl text-white/35 leading-none w-6 text-center"
+                                                    >
+                                                        +
+                                                    </motion.div>
+                                                </div>
                                             </div>
                                         </button>
 
-                                        {/* Expanded content */}
+                                        {/* expanded frame body */}
                                         <AnimatePresence>
                                             {isExpanded && (
                                                 <motion.div
                                                     initial={{ height: 0, opacity: 0 }}
                                                     animate={{ height: 'auto', opacity: 1 }}
                                                     exit={{ height: 0, opacity: 0 }}
-                                                    transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                                                    transition={{ duration: 0.38, ease: [0.16, 1, 0.3, 1] }}
                                                     className="overflow-hidden"
+                                                    style={{ paddingRight: 30 }}
                                                 >
-                                                    <div className="border-t border-white/10 px-5 py-5">
-                                                        {/* Frame info */}
-                                                        <div className="flex items-center gap-4 mb-4 font-mono text-xs text-white/25">
-                                                            <span>frame_id: {project.id}</span>
-                                                            <span>complexity: {project.complexity}</span>
-                                                            <span>depth: {depth}</span>
+                                                    <div
+                                                        className="px-6 py-6"
+                                                        style={{ borderTop: '1px solid rgba(255,255,255,0.1)' }}
+                                                    >
+                                                        {/* frame metadata row */}
+                                                        <div className="flex flex-wrap gap-5 mb-5 font-mono text-xs text-white/28">
+                                                            <span>frame_id: <span className="text-white/45">{project.id}</span></span>
+                                                            <span>complexity: <span className="text-white/45">{project.complexity}</span></span>
+                                                            <span>depth: <span className="text-white/45">{depth}</span></span>
+                                                            <span>pushed: <span className="text-white/45">{project.year}</span></span>
                                                         </div>
 
-                                                        {/* Description */}
-                                                        <p className="font-sans text-sm text-white/65 leading-relaxed mb-5">{project.desc}</p>
+                                                        {/* description */}
+                                                        <p className="font-sans text-base text-white/65 leading-relaxed mb-6">
+                                                            {project.desc}
+                                                        </p>
 
-                                                        {/* Stack frame: local variables (tech stack) */}
-                                                        <div className="mb-5">
-                                                            <div className="font-mono text-xs text-white/25 mb-2">// local variables</div>
+                                                        {/* local variables = tech stack */}
+                                                        <div className="mb-6">
+                                                            <div className="font-mono text-xs text-white/28 mb-3">
+                                                                {'// local variables (stack frame)'}
+                                                            </div>
                                                             <div className="flex flex-wrap gap-2">
                                                                 {project.stack.map(tech => (
-                                                                    <span key={tech} className="font-mono text-xs px-2 py-1 border border-white/15 text-white/50 hover:border-white/35 hover:text-white/80 transition-colors">
+                                                                    <motion.span
+                                                                        key={tech}
+                                                                        initial={{ opacity: 0, scale: 0.85 }}
+                                                                        animate={{ opacity: 1, scale: 1 }}
+                                                                        transition={{ duration: 0.2 }}
+                                                                        className="font-mono text-xs px-3 py-1.5 border border-white/15 text-white/52 hover:border-white/40 hover:text-white/85 transition-colors cursor-default"
+                                                                    >
                                                                         {tech}
-                                                                    </span>
+                                                                    </motion.span>
                                                                 ))}
                                                             </div>
                                                         </div>
 
-                                                        {/* Links */}
-                                                        <div className="flex items-center gap-4">
-                                                            <a href={project.links.github} className="font-mono text-xs text-white/40 hover:text-white transition-colors border-b border-white/15 hover:border-white/60 pb-px">
+                                                        {/* links */}
+                                                        <div className="flex items-center gap-5">
+                                                            <a
+                                                                href={project.links.github}
+                                                                target="_blank" rel="noopener noreferrer"
+                                                                className="font-mono text-sm text-white/45 hover:text-white transition-colors"
+                                                                style={{ borderBottom: '1px solid rgba(255,255,255,0.18)', paddingBottom: 1 }}
+                                                            >
                                                                 → GitHub
                                                             </a>
                                                             {project.links.live && (
-                                                                <a href={project.links.live} className="font-mono text-xs text-white/40 hover:text-white transition-colors border-b border-white/15 hover:border-white/60 pb-px">
+                                                                <a
+                                                                    href={project.links.live}
+                                                                    target="_blank" rel="noopener noreferrer"
+                                                                    className="font-mono text-sm text-white/45 hover:text-white transition-colors"
+                                                                    style={{ borderBottom: '1px solid rgba(255,255,255,0.18)', paddingBottom: 1 }}
+                                                                >
                                                                     → Live Demo
                                                                 </a>
                                                             )}
@@ -232,23 +330,41 @@ export default function Projects() {
                                 </motion.div>
                             )
                         })}
-                    </div>
 
-                    {/* Stack base */}
-                    <div className="border border-t-0 border-white/15 px-5 py-3 flex items-center justify-center">
-                        <span className="font-mono text-xs text-white/15">▓▓▓ STACK BASE ▓▓▓</span>
+                        {/* Stack base */}
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ delay: 0.5 }}
+                            className="flex items-center justify-center gap-4 py-3"
+                            style={{
+                                border: '1px solid rgba(255,255,255,0.12)',
+                                borderTop: 'none',
+                                background: 'rgba(255,255,255,0.015)',
+                            }}
+                        >
+                            <span className="font-mono text-xs text-white/18 tracking-widest">▓▓▓</span>
+                            <span className="font-mono text-xs text-white/22 tracking-widest">STACK BASE — addr:0x0000</span>
+                            <span className="font-mono text-xs text-white/18 tracking-widest">▓▓▓</span>
+                        </motion.div>
+
+                        {/* BOTTOM label */}
+                        <div className="flex items-center gap-3 mt-0 px-5 py-2">
+                            <span className="font-mono text-xs text-white/22 tracking-widest">▼ BOTTOM</span>
+                            <div className="flex-1 h-px bg-white/8" />
+                        </div>
                     </div>
                 </div>
 
-                {/* Footer */}
+                {/* ── Footer ── */}
                 <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    transition={{ delay: 1 }}
-                    className="mt-8 font-mono text-xs text-white/20 border-t border-white/10 pt-6"
+                    transition={{ delay: 0.9 }}
+                    className="mt-10 font-mono text-xs text-white/20 border-t border-white/10 pt-6"
                 >
                     <div>// push(): O(1) | pop(): O(1) | peek(): O(1)</div>
-                    <div>// Stack size: {PROJECTS.length} | Max capacity: ∞</div>
+                    <div>// Stack size: {STACK_SIZE} | Max capacity: ∞ | overflow: never</div>
                 </motion.div>
             </div>
         </PageWrapper>

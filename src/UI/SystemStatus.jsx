@@ -22,7 +22,7 @@ export default function SystemStatus() {
     const struct = PAGE_STRUCTURES[location.pathname] || 'UNDEFINED'
 
     return (
-        <div className="fixed top-0 left-0 right-0 z-50 border-t border-white/10 bg-black/90 backdrop-blur-sm px-6 py-1.5 flex items-center justify-between font-mono text-[10px] text-white/30 select-none">
+        <div className="fixed bottom-0 left-0 right-0 z-50 border-t border-white/10 bg-black/90 backdrop-blur-sm px-6 py-1.5 flex items-center justify-between font-mono text-[10px] text-white/30 select-none">
             <div className="flex items-center gap-6">
                 <span className="text-white/60">SYS:ACTIVE</span>
                 <span>STRUCTURE: <span className="text-white/60">{struct}</span></span>

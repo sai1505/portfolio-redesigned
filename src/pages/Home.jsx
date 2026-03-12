@@ -5,11 +5,11 @@ import PageWrapper from '../UI/PageWrapper'
 
 // Nodes tightly clustered — x/y range from ~30–70% of world
 const NODES = [
-    { id: 'home', label: 'ALEX.DEV', sublabel: 'Full Stack Engineer', path: '/', x: 50, y: 50, isCenter: true },
-    { id: 'about', label: 'ABOUT', sublabel: 'Linked List', path: '/about', x: 20, y: 28 },
-    { id: 'skills', label: 'SKILLS', sublabel: 'Binary Tree', path: '/skills', x: 78, y: 27 },
-    { id: 'projects', label: 'PROJECTS', sublabel: 'Stack', path: '/projects', x: 85, y: 68 },
-    { id: 'contact', label: 'CONTACT', sublabel: 'Hash Table', path: '/contact', x: 20, y: 70 },
+    { id: 'home', label: 'B.S.V.R', fullName: 'Bonamukkala Saivenkata Reddy', sublabel: 'Scalable Systems Engineer', path: '/', x: 50, y: 50, isCenter: true },
+    { id: 'about', label: 'ABOUT', sublabel: 'Linked List', path: '/about', x: 25, y: 28 },
+    { id: 'skills', label: 'SKILLS', sublabel: 'Binary Tree', path: '/skills', x: 68, y: 27 },
+    { id: 'projects', label: 'PROJECTS', sublabel: 'Stack', path: '/projects', x: 77, y: 68 },
+    { id: 'contact', label: 'CONTACT', sublabel: 'Hash Table', path: '/contact', x: 25, y: 70 },
 ]
 
 const EDGES = [
@@ -21,7 +21,7 @@ const EDGES = [
     { from: 'skills', to: 'projects' },
 ]
 
-const WORLD_W = 1800
+const WORLD_W = 2800
 const WORLD_H = 1200
 const MIN_ZOOM = 0.4
 const MAX_ZOOM = 2.5
@@ -183,13 +183,6 @@ export default function Home() {
 
     return (
         <PageWrapper>
-            {/* Header label */}
-            <div className="absolute top-20 left-8 z-10 font-mono text-xs text-white/30 pointer-events-none select-none">
-                <div>STRUCTURE: GRAPH</div>
-                <div>NODES: {NODES.length} | EDGES: {EDGES.length}</div>
-                <div className="mt-1 text-white/20">// Scroll to zoom · Drag to pan · Click node to navigate</div>
-            </div>
-
             {/* Zoom controls */}
             <div className="fixed top-24 right-8 z-20 flex flex-col gap-1 select-none">
                 <button
@@ -364,6 +357,7 @@ export default function Home() {
                                 >
                                     {node.label}
                                 </text>
+
                                 {/* Sublabel */}
                                 <text
                                     y={node.isCenter ? 18 : 16}
@@ -375,6 +369,7 @@ export default function Home() {
                                 >
                                     {node.sublabel}
                                 </text>
+
                                 {/* Enter prompt */}
                                 {node.path && isHovered && (
                                     <text
@@ -390,6 +385,70 @@ export default function Home() {
                             </g>
                         )
                     })}
+
+                    {hoveredNode === "home" && (() => {
+                        const node = getNodeById("home")
+                        const { x, y } = getXY(node)
+
+                        const boxWidth = 340
+                        const boxHeight = 44
+                        const boxX = x - boxWidth / 2
+                        const boxY = y - 370
+
+                        return (
+                            <motion.g
+                                initial={{ opacity: 0, y: -10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.25 }}
+                            >
+                                {/* pointer line */}
+                                <line
+                                    x1={x}
+                                    y1={boxY + boxHeight}
+                                    x2={x}
+                                    y2={y - 150}
+                                    stroke="rgba(255,255,255,0.2)"
+                                    strokeWidth="1.2"
+                                    strokeDasharray="4 4"
+                                />
+
+                                {/* message box */}
+                                <rect
+                                    x={boxX}
+                                    y={boxY}
+                                    width={boxWidth}
+                                    height={boxHeight}
+                                    rx="6"
+                                    fill="rgba(0,0,0,0.85)"
+                                    stroke="rgba(255,255,255,0.25)"
+                                    strokeWidth="1"
+                                />
+
+                                {/* label */}
+                                <text
+                                    x={x}
+                                    y={boxY + 28}
+                                    fill="rgba(255,255,255,0.85)"
+                                    fontSize="16"
+                                    fontFamily="JetBrains Mono"
+                                    textAnchor="middle"
+                                >
+                                    Bonamukkala Saivenkata Reddy
+                                </text>
+
+                                {/* small tag */}
+                                <text
+                                    x={boxX + 10}
+                                    y={boxY - 6}
+                                    fill="rgba(255,255,255,0.35)"
+                                    fontSize="11"
+                                    fontFamily="JetBrains Mono"
+                                >
+                                    node_fullname
+                                </text>
+                            </motion.g>
+                        )
+                    })()}
                 </motion.svg>
             </div>
 

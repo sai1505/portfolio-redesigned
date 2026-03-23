@@ -107,7 +107,7 @@ const VOLUNTEER = [
     },
 ]
 
-const RESUME_LINK = 'https://docs.google.com/document/d/13ThEehi02BopZGaJLIjmfOB7plL6Zh7Nki4mxSWrJSY/edit?usp=sharing'
+const RESUME_LINK = '/resume.pdf'
 
 const SECTIONS = [
     { key: 'bio', label: 'BIO', struct: 'RECORD', data: null },
